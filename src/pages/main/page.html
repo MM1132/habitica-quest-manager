@@ -1,0 +1,117 @@
+<? const data = getMainPageData(); ?>
+<? const globalData = getGlobalPageData(); ?>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('src/pages/main/styles'); ?>
+  </head>
+  <body>
+    <div class="header">
+      <h4><?= globalData.scriptName ?></h4>
+      <nav>
+        <ul class="navigation-buttons">
+          <li><a class="button" href="<?= globalData.mainPageUrl ?>">Main</a></li>
+          <li><a class="button" href="<?= globalData.settingsPageUrl ?>">Settings</a></li>
+        </ul>
+      </nav>
+    </div>
+    
+    <main>
+      <? if(data.authenticated) { ?>
+      <div class="section">
+        <h2>Profile</h2>
+        <div class="section-content">
+          <ul>
+            <li><strong>Profile name:</strong> <?= data.profileName ?></li>
+            <li><strong>Username:</strong> @<?= data.username ?></li>
+            <li><strong>Party:</strong> <?= data.party.name ?></li>
+          </ul>
+        </div>
+      </div>
+      <!-- PARTY LEADER ACTIONS -->
+      <? if (Object.keys(data.currentQuest.partyLeaderActions).length > 0) { ?>
+        <div class="section">
+          <h2>Party Leader Actions</h2>
+          <div class="section-content">
+            <ul>
+              <? if ("start" in data.currentQuest.partyLeaderActions) { ?>
+                <li><strong>Start the current quest:</strong> <a class="button" href="<?= data.currentQuest.partyLeaderActions.start ?>">Start it now!</a></li>
+              <? } ?>
+
+              <? if ("test" in data.currentQuest.partyLeaderActions) { ?>
+                <li><strong>Test the other page:</strong> <a class="button" href="<?= data.currentQuest.partyLeaderActions.test ?>">Test!</a></li>
+              <? } ?>
+            </ul>
+          </div>
+        </div>
+      <? } ?>
+      <!-- CURRENT QUEST INFO -->
+      <div class="section">
+        <h2>Current Quest Info</h2>
+        <div class="section-content">
+          <ul>
+            <li><strong>Currently ongoing quest:</strong> <?= data.currentQuest.name ?></li>
+            <li><strong>Current quest owner:</strong> <?= data.currentQuest.ownerProfileName ?></li>
+            <li><strong>Status:</strong> <?= data.currentQuest.status ?></li>
+            <li><strong>Participating members:</strong> <?= data.currentQuest.participatingMemberCount ?> / <?= data.party.memberCount ?></li>
+            <li><strong>Participation percentage:</strong> <?= data.currentQuest.participationPercentage ?>%</li>
+          </ul>
+        </div>
+      </div>
+      <!-- LIST OF USER'S QUESTS -->
+      <div class="section">
+        <h2>Quests of <?= data.profileName ?></h2>
+        <div class="section-content">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Count</th>
+                <th>Possible Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <? for(let i = 0; i < data.quests.length; i++) { ?>
+                <tr>
+                  <td>
+                    <?= data.quests[i].name ?>
+                    <? if (data.quests[i].name === data.currentQuest.name) { ?>
+                      <strong>
+                        (<?= data.currentQuest.status ?>)
+                      </strong>
+                    <? } ?>
+                  </td>
+                  <td><?= data.quests[i].count ?></td>
+                  <td>
+                    <? if ("invite" in data.quests[i].links) { ?>
+                      <a class="button" href="<?= data.quests[i].links['invite'] ?>">
+                        Send invitations
+                      </a>
+                    <? } else if ("start" in data.quests[i].links) { ?>
+                      <a class="button" href="<?= data.quests[i].links['start'] ?>">
+                        Start this quest
+                      </a>
+                    <? } else { ?>
+                      <i>no actions available</i>
+                    <? } ?>
+                  </td>
+                </tr>
+              <? } ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <? } else { ?>
+        <div class="section">
+          <h2>Authentication</h2>
+          <div class="section-content">
+            <p>You are either not authenticated or your entered credentials are not valid. </p>
+            <p>Please authenticate yourself on the <a href="<?= globalData.settingsPageUrl ?>">settings</a> page to see the content.</p>
+          </div>
+        </div>
+      <? } ?>
+    </main>
+  </body>
+</html>
