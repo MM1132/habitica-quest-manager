@@ -1,24 +1,24 @@
 function getUserData() {
-  return doApiRequest("https://habitica.com/api/v4/user", { method: "get" }).data;
+  return doApiRequest('https://habitica.com/api/v4/user', { method: 'get' }).data;
 }
 
 function getPartyData() {
-  return doApiRequest("https://habitica.com/api/v4/groups/party", { method: "get" }).data;
+  return doApiRequest('https://habitica.com/api/v4/groups/party', { method: 'get' }).data;
 }
 
 function getUserDataById(userId) {
-  return doApiRequest(`https://habitica.com/api/v4/members/${userId}`, { method: "get" }).data;
+  return doApiRequest(`https://habitica.com/api/v4/members/${userId}`, { method: 'get' }).data;
 }
 
 function inviteMembersToQuest(groupId, questKey) {
   return doApiRequest(`https://habitica.com/api/v4/groups/${groupId}/quests/invite/${questKey}`, {
-    method: "post"
+    method: 'post',
   }).data;
 }
 
 function forceStartQuest(qroupId) {
   return doApiRequest(`https://habitica.com/api/v4/groups/${qroupId}/quests/force-start`, {
-    method: "post"
+    method: 'post',
   }).data;
 }
 

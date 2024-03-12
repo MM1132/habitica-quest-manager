@@ -2,9 +2,9 @@
 // For example: the name of the script
 
 const getGlobalPageData = () => {
-    return {
-        scriptName: SCRIPT_NAME,
-        mainPageUrl: `${ScriptApp.getService().getUrl()}`,
-        settingsPageUrl: `${ScriptApp.getService().getUrl()}/settings`,
-    }
-}
+  return {
+    scriptName: SCRIPT_NAME,
+    mainPageUrl: `${ScriptApp.getService().getUrl()}`,
+    settingsPageUrl: `${ScriptApp.getService().getUrl()}/settings`,
+  };
+};

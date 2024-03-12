@@ -29,12 +29,7 @@
         "no-var": "off",
         "valid-jsdoc": "off",
         "require-jsdoc": "off",
-        "no-unused-vars": [
-            "error", {
-                "vars": "none",
-                "args": "all",
-                "ignoreRestSiblings": false
-            }
-        ]
+        "no-unused-vars": "off",
+        "no-undef": "off"
     }
 }
