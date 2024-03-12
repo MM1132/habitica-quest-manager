@@ -1,3 +1,7 @@
-doApiRequest.js
 .gitignore
+.eslint.json
+.prettierrc.json
 README.md
+package-lock.json
+package.json
+node-modules
