@@ -5,7 +5,9 @@ function getQuestsWithLinks(
   userData,
   partyData
 ) {
-  const ownedQuestEntries = Object.entries(quests).filter((questEntry) => questEntry[1] > 0);
+  const ownedQuestEntries = Object.entries(quests).filter(
+    (questEntry) => questEntry[1] > 0
+  );
 
   const questsWithLinks = ownedQuestEntries.map((questEntry) => ({
     name: questEntry[0],
@@ -25,7 +27,12 @@ function getQuestsWithLinks(
   return questsWithLinks;
 }
 
-function getPartyLeaderActions(userData, partyData, currentQuestStatus, participationPercentage) {
+function getPartyLeaderActions(
+  userData,
+  partyData,
+  currentQuestStatus,
+  participationPercentage
+) {
   const partyLeaderActions = {
     ...(currentQuestStatus === 'INVITATIONS_SENT' &&
       participationPercentage >= QUEST_START_THRESHOLD &&
@@ -53,16 +60,23 @@ function getMainPageData() {
     ? null
     : getUserDataById(partyData.quest.leader).profile.name;
 
-  const participatingMemberCount = Object.values(partyData.quest.members).filter((v) => !!v).length;
+  const participatingMemberCount = Object.values(
+    partyData.quest.members
+  ).filter((v) => !!v).length;
   const participationPercentage = Math.floor(
     (100 / partyData.memberCount) * participatingMemberCount
   );
 
-  const currentQuestStatus = partyData.quest.key
-    ? partyData.quest.active
-      ? 'IN_PROGRESS'
-      : 'INVITATIONS_SENT'
-    : 'NO_QUEST';
+  const currentQuestStatus = (() => {
+    if (!partyData.quest.key) {
+      return 'NO_QUEST';
+    }
+    if (partyData.quest.active) {
+      return 'IN_PROGRESS';
+    }
+    return 'INVITATIONS_SENT';
+  })();
+
   const quests = getQuestsWithLinks(
     userData.items.quests,
     currentQuestStatus,

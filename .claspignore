@@ -1,7 +1,4 @@
 node_modules/**
-.gitignore
-.eslint.json
-.prettierrc.json
-README.md
 package-lock.json
 package.json
+README.md

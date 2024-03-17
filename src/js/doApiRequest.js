@@ -7,7 +7,8 @@ const SCRIPT_NAME = `Kanguste's Quest Manager v0.1`;
 
 function doApiRequest(url, params) {
   const USER_ID = PropertiesService.getScriptProperties().getProperty('userId');
-  const API_TOKEN = PropertiesService.getScriptProperties().getProperty('apiToken');
+  const API_TOKEN =
+    PropertiesService.getScriptProperties().getProperty('apiToken');
 
   const HEADERS = {
     'x-client': `${AUTHOR_ID}-${SCRIPT_NAME}`,
