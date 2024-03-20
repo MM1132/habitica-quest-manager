@@ -48,12 +48,13 @@ function getPartyLeaderActions(
 function getCurrentQuestData() {}
 
 function getMainPageData() {
-  const userData = getUserData();
-  if (!userData) {
+  const user = getUser();
+  if (user.success === false) {
     return {
       authenticated: false,
     };
   }
+  const userData = user.data;
 
   const partyData = getPartyData();
   const questOwnerProfileName = !partyData.quest.leader

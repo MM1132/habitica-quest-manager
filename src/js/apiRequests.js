@@ -1,6 +1,7 @@
-function getUserData() {
-  return doApiRequest('https://habitica.com/api/v4/user', { method: 'get' })
-    .data;
+function getUser() {
+  return doApiRequest('https://habitica.com/api/v4/user', {
+    method: 'get',
+  });
 }
 
 function getPartyData() {

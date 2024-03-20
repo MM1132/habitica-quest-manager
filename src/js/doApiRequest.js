@@ -6,9 +6,10 @@ const AUTHOR_ID = '90c987f2-cf51-442f-b932-3c4194d56ad6';
 const SCRIPT_NAME = `Kanguste's Quest Manager v0.1`;
 
 function doApiRequest(url, params) {
-  const USER_ID = PropertiesService.getScriptProperties().getProperty('userId');
+  const USER_ID =
+    PropertiesService.getScriptProperties().getProperty('userId') || '';
   const API_TOKEN =
-    PropertiesService.getScriptProperties().getProperty('apiToken');
+    PropertiesService.getScriptProperties().getProperty('apiToken') || '';
 
   const HEADERS = {
     'x-client': `${AUTHOR_ID}-${SCRIPT_NAME}`,

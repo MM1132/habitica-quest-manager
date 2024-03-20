@@ -13,10 +13,12 @@
         const userId = document.getElementById('userId').value;
         const apiToken = document.getElementById('apiToken').value;
 
+        document.getElementById('loading-bar').innerHTML = 'Loading...';
+
         google.script.run.withSuccessHandler(() => {
           document.getElementById('back-to-main-page').submit();
         }).withFailureHandler((error) => {
-          alert('Error: ' + error);
+          document.getElementById('loading-bar').innerHTML = error.message;
         }).setSetupData(password, userId, apiToken);
       }
     </script>
@@ -29,20 +31,25 @@
       <center>
         <div class="section">
           <h2>Setup for the Quest Manager</h2>
-          <p class="warning-text">NB! Since this Quest Manager page will be publically accessable to anyone, the password 
-            you set here will be used if you want to customize some of the setting later on. So it's 
+          <p class="warning-text">
+            NB! Since this Quest Manager page will be publically accessable to anyone, the password 
+            you set here will be used for you to be able to customize some of the setting later on. So it's 
             best to remember what you set it to. All fields are required. You can get your UserID and 
-            API Token on Habitica's Settings page under the label "Site Data". </p>
+            API Token on Habitica's Settings page under the label "Site Data".
+          </p>
+
           <div class="section-content">
-            <div id="settings-form">
-              <input class="text-field" type="password" id="password" name="userId" placeholder="Enter password" required>
+            <div id="form">
+              <input class="text-field" type="password" id="password" placeholder="Enter password" required>
 
               <hr>
 
-              <input class="text-field" type="text" id="userId" name="userId" placeholder="Enter User ID" required>
-              <input class="text-field" type="password" id="apiToken" name="apiToken" placeholder="Enter API Token" required>
+              <input class="text-field" type="text" id="userId" placeholder="Enter User ID" required>
+              <input class="text-field" type="password" id="apiToken" placeholder="Enter API Token" required>
 
-              <button class="button" id="settings-form-submit-button" onclick="submitSetup()">Apply Settings</button>
+              <button class="button" id="form-submit-button" onclick="submitSetup()">Apply Settings</button>
+
+              <i id="loading-bar"></i>
             </div>
             <form action="<?= globalData.mainPageUrl ?>" method='get' id='back-to-main-page'></form>
           </div>
