@@ -1,3 +1,11 @@
+const getQuestStartThreshold = () => {
+  const thresholdProperty = PropertiesService.getScriptProperties().getProperty(
+    'questStartThreshold'
+  );
+
+  return Number(thresholdProperty);
+};
+
 function getQuestsWithLinks(
   quests,
   currentQuestStatus,
@@ -17,7 +25,7 @@ function getQuestsWithLinks(
         invite: `${ScriptApp.getService().getUrl()}/invite?questKey=${questEntry[0]}&groupId=${partyData.id}`,
       }),
       ...(currentQuestStatus === 'INVITATIONS_SENT' &&
-        participationPercentage >= QUEST_START_THRESHOLD &&
+        participationPercentage >= getQuestStartThreshold() &&
         userData.id === partyData.quest.leader && {
           start: `${ScriptApp.getService().getUrl()}/start?groupId=${partyData.id}`,
         }),
@@ -35,7 +43,7 @@ function getPartyLeaderActions(
 ) {
   const partyLeaderActions = {
     ...(currentQuestStatus === 'INVITATIONS_SENT' &&
-      participationPercentage >= QUEST_START_THRESHOLD &&
+      participationPercentage >= getQuestStartThreshold() &&
       partyData.leader.id === userData.id && {
         start: `${ScriptApp.getService().getUrl()}/start?groupId=${partyData.id}`,
       }),
@@ -109,6 +117,9 @@ function getMainPageData() {
     party: {
       name: partyData.name,
       memberCount: partyData.memberCount,
+    },
+    settings: {
+      questStartThreshold: getQuestStartThreshold(),
     },
   };
 

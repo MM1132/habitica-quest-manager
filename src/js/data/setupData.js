@@ -9,5 +9,9 @@ const setSetupData = (password, userId, apiToken) => {
     throw new Error(user.message);
   }
 
+  PropertiesService.getScriptProperties().setProperty(
+    'questStartThreshold',
+    80
+  );
   PropertiesService.getScriptProperties().setProperty('isSetupComplete', true);
 };
