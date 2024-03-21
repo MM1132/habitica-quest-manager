@@ -7,13 +7,13 @@ function getUser() {
 function getPartyData() {
   return doApiRequest('https://habitica.com/api/v4/groups/party', {
     method: 'get',
-  }).data;
+  });
 }
 
 function getUserDataById(userId) {
   return doApiRequest(`https://habitica.com/api/v4/members/${userId}`, {
     method: 'get',
-  }).data;
+  });
 }
 
 function inviteMembersToQuest(groupId, questKey) {
@@ -22,7 +22,7 @@ function inviteMembersToQuest(groupId, questKey) {
     {
       method: 'post',
     }
-  ).data;
+  );
 }
 
 function forceStartQuest(qroupId) {
@@ -31,7 +31,7 @@ function forceStartQuest(qroupId) {
     {
       method: 'post',
     }
-  ).data;
+  );
 }
 
 // cancel a quest

@@ -20,10 +20,9 @@ function backToMainPage(message) {
 }
 
 function authGuard(endpoint) {
-  const isSetupComplete =
-    PropertiesService.getScriptProperties().getProperty('isSetupComplete');
+  const authenticated = getAuthenticated();
 
-  if (!isSetupComplete) {
+  if (!authenticated) {
     return HtmlService.createTemplateFromFile('pages/setup')
       .evaluate()
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);

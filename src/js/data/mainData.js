@@ -1,11 +1,3 @@
-const getQuestStartThreshold = () => {
-  const thresholdProperty = PropertiesService.getScriptProperties().getProperty(
-    'questStartThreshold'
-  );
-
-  return Number(thresholdProperty);
-};
-
 function getQuestsWithLinks(
   quests,
   currentQuestStatus,
@@ -47,7 +39,6 @@ function getPartyLeaderActions(
       partyData.leader.id === userData.id && {
         start: `${ScriptApp.getService().getUrl()}/start?groupId=${partyData.id}`,
       }),
-    /* test: `${ScriptApp.getService().getUrl()}/test`, */
   };
 
   return partyLeaderActions;
@@ -56,72 +47,73 @@ function getPartyLeaderActions(
 function getCurrentQuestData() {}
 
 function getMainPageData() {
-  const user = getUser();
-  if (user.success === false) {
+  try {
+    const userData = getUser();
+
+    const partyData = getPartyData();
+    const questOwnerProfileName = !partyData.quest.leader
+      ? null
+      : getUserDataById(partyData.quest.leader).profile.name;
+
+    const participatingMemberCount = Object.values(
+      partyData.quest.members
+    ).filter((v) => !!v).length;
+    const participationPercentage = Math.floor(
+      (100 / partyData.memberCount) * participatingMemberCount
+    );
+
+    const currentQuestStatus = (() => {
+      if (!partyData.quest.key) {
+        return 'NO_QUEST';
+      }
+      if (partyData.quest.active) {
+        return 'IN_PROGRESS';
+      }
+      return 'INVITATIONS_SENT';
+    })();
+
+    const quests = getQuestsWithLinks(
+      userData.items.quests,
+      currentQuestStatus,
+      participationPercentage,
+      userData,
+      partyData
+    );
+
+    const partyLeaderActions = getPartyLeaderActions(
+      userData,
+      partyData,
+      currentQuestStatus,
+      participationPercentage
+    );
+
+    const dataForTemplate = {
+      authenticated: getAuthenticated(),
+      profileName: userData.profile.name,
+      username: userData.auth.local.username,
+      quests,
+      currentQuest: {
+        name: partyData.quest.key,
+        ownerProfileName: questOwnerProfileName,
+        status: currentQuestStatus,
+        participatingMemberCount,
+        participationPercentage,
+        partyLeaderActions,
+      },
+      party: {
+        name: partyData.name,
+        memberCount: partyData.memberCount,
+      },
+      settings: {
+        questStartThreshold: getQuestStartThreshold(),
+      },
+    };
+
+    return dataForTemplate;
+  } catch (e) {
     return {
-      authenticated: false,
+      authenticated: getAuthenticated(),
+      message: `Error: ${e.message}`,
     };
   }
-  const userData = user.data;
-
-  const partyData = getPartyData();
-  const questOwnerProfileName = !partyData.quest.leader
-    ? null
-    : getUserDataById(partyData.quest.leader).profile.name;
-
-  const participatingMemberCount = Object.values(
-    partyData.quest.members
-  ).filter((v) => !!v).length;
-  const participationPercentage = Math.floor(
-    (100 / partyData.memberCount) * participatingMemberCount
-  );
-
-  const currentQuestStatus = (() => {
-    if (!partyData.quest.key) {
-      return 'NO_QUEST';
-    }
-    if (partyData.quest.active) {
-      return 'IN_PROGRESS';
-    }
-    return 'INVITATIONS_SENT';
-  })();
-
-  const quests = getQuestsWithLinks(
-    userData.items.quests,
-    currentQuestStatus,
-    participationPercentage,
-    userData,
-    partyData
-  );
-
-  const partyLeaderActions = getPartyLeaderActions(
-    userData,
-    partyData,
-    currentQuestStatus,
-    participationPercentage
-  );
-
-  const dataForTemplate = {
-    authenticated: true,
-    profileName: userData.profile.name,
-    username: userData.auth.local.username,
-    quests,
-    currentQuest: {
-      name: partyData.quest.key,
-      ownerProfileName: questOwnerProfileName,
-      status: currentQuestStatus,
-      participatingMemberCount,
-      participationPercentage,
-      partyLeaderActions,
-    },
-    party: {
-      name: partyData.name,
-      memberCount: partyData.memberCount,
-    },
-    settings: {
-      questStartThreshold: getQuestStartThreshold(),
-    },
-  };
-
-  return dataForTemplate;
 }

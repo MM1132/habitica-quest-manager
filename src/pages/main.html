@@ -117,7 +117,8 @@
           <h2>Authentication</h2>
           <div class="section-content">
             <p>You are either not authenticated or your entered credentials are not valid. </p>
-            <p>Please authenticate yourself on the <a href="<?= globalData.settingsPageUrl ?>">settings</a> page to see the content.</p>
+            <p>Please authenticate yourself on the <a href="<?= globalData.setupPageUrl ?>">setup</a> page to see the content.</p>
+            <p class="warning-text"><?= data.message ?></p>
           </div>
         </div>
       <? } ?>

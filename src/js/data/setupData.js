@@ -13,5 +13,6 @@ const setSetupData = (password, userId, apiToken) => {
     'questStartThreshold',
     80
   );
-  PropertiesService.getScriptProperties().setProperty('isSetupComplete', true);
+
+  PropertiesService.getScriptProperties().setProperty('authenticated', true);
 };

@@ -25,6 +25,12 @@ function doApiRequest(url, params) {
   };
 
   const response = UrlFetchApp.fetch(url, options);
+  const parsedJson = JSON.parse(response.getContentText());
 
-  return JSON.parse(response.getContentText());
+  if (parsedJson.success === false) {
+    PropertiesService.getScriptProperties().setProperty('authenticated', false);
+    throw parsedJson;
+  }
+
+  return parsedJson.data;
 }
