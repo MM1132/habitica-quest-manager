@@ -16,7 +16,7 @@ This is a **Google App's Script** integrating with Habitica. It allows your part
 
 Setup | Main | Settings | 
 :-:|:-:|:-:
-![Setup Page](image-2.png) | ![Main Page](image.png) | ![Settings Page](image-1.png)
+![Setup Page](img/setup.png) | ![Main Page](img/main.png) | ![Settings Page](img/settings.png)
 
 ## Installation
 You will need to be logged into a Google Account for this to work

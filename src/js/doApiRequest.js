@@ -3,7 +3,7 @@ const QUEST_START_THRESHOLD = 80;
 
 // --- DON'T CHANGE, SCRIPT DETAILS ---
 const AUTHOR_ID = '90c987f2-cf51-442f-b932-3c4194d56ad6';
-const SCRIPT_NAME = `Quest Manager v1.0`;
+const SCRIPT_NAME = `Quest Manager v1.1`;
 
 function doApiRequest(url, params) {
   const USER_ID =
