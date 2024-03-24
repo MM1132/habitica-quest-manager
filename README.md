@@ -1,6 +1,8 @@
 # Habitica Quest Manager v1.1
 
-*scroll down to the [Installation](#installation) section for setup instructions*
+- ***NB!** The UserID and ApiToken are stored in the PropertiesService of the Google Apps Script, which means that ONLY YOU will have access to them when they are entered into the Setup form of the Quest Manager. You should NEVER enter your UserID and ApiToken on a Quest Manager that anyone else other than yourself has Deployed.*
+
+*Scroll down to the [Installation](#installation) section for setup instructions.*
 
 This is a **Google App's Script** integrating with Habitica. It allows your party members to send invitations for, and start quests from, your inventory. It requires only a single deploy, and doesn't require the user to change anything manually in the code. All the settings are available in the UI of the deployed page. Once the script is deployed, the user can simply enter their UserID and ApiToken into the form on the Setup page of the Deployed website, then share the URL with their party. It's that simple! 
 
