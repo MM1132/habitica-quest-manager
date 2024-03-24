@@ -12,7 +12,7 @@ function doApiRequest(url, params) {
     PropertiesService.getScriptProperties().getProperty('apiToken') || '';
 
   const HEADERS = {
-    'x-client': `${AUTHOR_ID}-${SCRIPT_NAME}`,
+    'x-client': `${AUTHOR_ID}-Quest Manager`,
     'x-api-user': USER_ID,
     'x-api-key': API_TOKEN,
   };
