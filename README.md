@@ -1,6 +1,6 @@
 # Habitica Quest Manager v1.0
 
-*scroll down to the (Installation)[#installation] section for setup instructions*
+*scroll down to the [Installation](#installation) section for setup instructions*
 
 This is a **Google App's Script** integrating with Habitica. It allows your party members to send invitations for, and start quests from, your inventory. It requires only a single deploy, and doesn't require the user to change anything manually in the code. All the settings are available in the UI of the deployed page. Once the script is deployed, the user can simply enter their UserID and ApiToken into the form on the Setup page of the Deployed website, then share the URL with their party. It's that simple! 
 
