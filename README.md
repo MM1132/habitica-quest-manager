@@ -2,20 +2,15 @@
 
 *scroll down to the (Installation)[#installation] section for setup instructions*
 
-This is a **Google App's Script** to allow your party members to send invitations for, and start quests from your inventory. It requires only a single deploy, and doesn't require the user to change anything manually in the code. Once the script is deployed, the user can simply enter their UserID and ApiToken into the form on the Setup page of the Deployed website. 
+This is a **Google App's Script** integrating with Habitica. It allows your party members to send invitations for, and start quests from, your inventory. It requires only a single deploy, and doesn't require the user to change anything manually in the code. All the settings are available in the UI of the deployed page. Once the script is deployed, the user can simply enter their UserID and ApiToken into the form on the Setup page of the Deployed website, then share the URL with their party. It's that simple! 
 
 ## Features
-- **View current quest information:** 
-  - including the current quest status IN_PROGRESS / INVITATIONS_SENT / NO_QUEST
-  - member participation percentage
-
-- **View the user's quest inventory:**
-  - Send invitations and start quests with the simple press of a button
-- **Secure authentication:** in order to change any settings of the Quest Manager, you will be required a password, to make sure only you can edit your own Quest Manager page
-
-- **Settings page:** change the QST (quest start threshold) for when party members should be able to start your quests
-
-- **Party Leader Actions:** if the website is generated for the party leader, it allows to start quests initiated by any other party members
+- **Send invitations and start quests**
+- **View current quest information**
+- **View the user's quest inventory**
+- **Secure authentication**
+- **Settings page for extra tweaks**
+- **Extra actions for Party Leaders**
 
 ## Preview Images
 
