@@ -1,4 +1,4 @@
-# Habitica Quest Manager v1.0
+# Habitica Quest Manager v1.1
 
 *scroll down to the [Installation](#installation) section for setup instructions*
 
