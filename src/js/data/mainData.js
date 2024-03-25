@@ -13,7 +13,7 @@ function getQuestsWithLinks(
     name: questEntry[0],
     count: questEntry[1],
     links: {
-      ...(currentQuestStatus === 'RESTING' && {
+      ...(currentQuestStatus === 'IDLE' && {
         invite: `${ScriptApp.getService().getUrl()}/invite?questKey=${questEntry[0]}&groupId=${partyData.id}`,
       }),
       ...(currentQuestStatus === 'INVITATIONS_SENT' &&
@@ -64,7 +64,7 @@ function getMainPageData() {
 
     const currentQuestStatus = (() => {
       if (!partyData.quest.key) {
-        return 'NO_QUEST';
+        return 'IDLE';
       }
       if (partyData.quest.active) {
         return 'IN_PROGRESS';
