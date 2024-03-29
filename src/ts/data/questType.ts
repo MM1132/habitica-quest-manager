@@ -1,0 +1,5 @@
+export enum QuestStatus {
+  IDLE = 'IDLE',
+  INVITATIONS_SENT = 'INVITATIONS_SENT',
+  IN_PROGRESS = 'IN_PROGRESS',
+}

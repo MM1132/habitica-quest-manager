@@ -1,11 +1,15 @@
-// The % of members that are required to have joined a quest for the "start" button to appear
-const QUEST_START_THRESHOLD = 80;
-
 // --- DON'T CHANGE, SCRIPT DETAILS ---
 const AUTHOR_ID = '90c987f2-cf51-442f-b932-3c4194d56ad6';
-const SCRIPT_NAME = `Quest Manager v1.1`;
+export const SCRIPT_NAME = `Quest Manager v1.1`;
 
-function doApiRequest(url, params) {
+type HttpMethod = 'get' | 'delete' | 'patch' | 'post' | 'put';
+
+export interface ApiRequestParams {
+  method: HttpMethod;
+  payload?: any;
+}
+
+export const doApiRequest = (url: string, params: ApiRequestParams) => {
   const USER_ID =
     PropertiesService.getScriptProperties().getProperty('userId') || '';
   const API_TOKEN =
@@ -28,9 +32,12 @@ function doApiRequest(url, params) {
   const parsedJson = JSON.parse(response.getContentText());
 
   if (parsedJson.success === false) {
-    PropertiesService.getScriptProperties().setProperty('authenticated', false);
+    PropertiesService.getScriptProperties().setProperty(
+      'authenticated',
+      'false'
+    );
     throw parsedJson;
   }
 
   return parsedJson.data;
-}
+};

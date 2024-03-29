@@ -1,4 +1,10 @@
-const setSetupData = (password, userId, apiToken) => {
+import { getUser } from '../apiRequests';
+
+export const setSetupData = (
+  password: string,
+  userId: string,
+  apiToken: string
+) => {
   PropertiesService.getScriptProperties().setProperty('password', password);
   PropertiesService.getScriptProperties().setProperty('userId', userId);
   PropertiesService.getScriptProperties().setProperty('apiToken', apiToken);
@@ -11,8 +17,8 @@ const setSetupData = (password, userId, apiToken) => {
 
   PropertiesService.getScriptProperties().setProperty(
     'questStartThreshold',
-    80
+    '80'
   );
 
-  PropertiesService.getScriptProperties().setProperty('authenticated', true);
+  PropertiesService.getScriptProperties().setProperty('authenticated', 'true');
 };

@@ -1,13 +1,14 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "ignorePatterns": [
-    "!.*"
-  ],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
   "plugins": [
-    "prettier",
+    "@typescript-eslint",
     "googleappsscript",
-    "@typescript-eslint"
+    "prettier"
   ],
   "env": {
     "browser": true,
@@ -16,25 +17,28 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "airbnb-base",
     "plugin:prettier/recommended",
-    "google",
     "prettier"
   ],
-  "parserOptions": {
-    "ecmaVersion": "latest"
-  },
   "rules": {
     "prettier/prettier": "error",
-    "no-var": "off",
+    "import/prefer-default-export": "off",
+    "import/extensions": "off",
     "valid-jsdoc": "off",
     "require-jsdoc": "off",
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "no-undef": "off",
-    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "args": "all",
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
     "@typescript-eslint/no-explicit-any": "off"
   }
 }

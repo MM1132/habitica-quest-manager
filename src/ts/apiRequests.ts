@@ -1,38 +1,40 @@
-function getUser() {
+import { doApiRequest } from './doApiRequest';
+
+export const getUser = () => {
   return doApiRequest('https://habitica.com/api/v4/user', {
     method: 'get',
   });
-}
+};
 
-function getPartyData() {
+export const getPartyData = () => {
   return doApiRequest('https://habitica.com/api/v4/groups/party', {
     method: 'get',
   });
-}
+};
 
-function getUserDataById(userId) {
+export const getUserDataById = (userId: string) => {
   return doApiRequest(`https://habitica.com/api/v4/members/${userId}`, {
     method: 'get',
   });
-}
+};
 
-function inviteMembersToQuest(groupId, questKey) {
+export const inviteMembersToQuest = (groupId: string, questKey: string) => {
   return doApiRequest(
     `https://habitica.com/api/v4/groups/${groupId}/quests/invite/${questKey}`,
     {
       method: 'post',
     }
   );
-}
+};
 
-function forceStartQuest(qroupId) {
+export const forceStartQuest = (qroupId: string) => {
   return doApiRequest(
     `https://habitica.com/api/v4/groups/${qroupId}/quests/force-start`,
     {
       method: 'post',
     }
   );
-}
+};
 
 // cancel a quest
 // https://habitica.com/api/v4/groups/38ffa809-4dbc-44ef-bdab-5a0d8e39633f/quests/cancel

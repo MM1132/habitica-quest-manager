@@ -1,4 +1,4 @@
-const getQuestStartThreshold = () => {
+export const getQuestStartThreshold = (): number => {
   const thresholdProperty = PropertiesService.getScriptProperties().getProperty(
     'questStartThreshold'
   );
@@ -6,7 +6,7 @@ const getQuestStartThreshold = () => {
   return Number(thresholdProperty);
 };
 
-const getAuthenticated = () => {
+export const getAuthenticated = (): boolean => {
   const authenticated =
     PropertiesService.getScriptProperties().getProperty('authenticated') ===
     'true';

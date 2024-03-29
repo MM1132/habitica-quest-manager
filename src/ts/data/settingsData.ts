@@ -1,4 +1,7 @@
-const updateSettings = (password, questStartThreshold) => {
+export const updateSettings = (
+  password: string,
+  questStartThreshold: string
+) => {
   const savedPassword =
     PropertiesService.getScriptProperties().getProperty('password');
 

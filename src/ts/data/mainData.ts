@@ -1,22 +1,26 @@
-function getQuestsWithLinks(
-  quests,
-  currentQuestStatus,
-  participationPercentage,
-  userData,
-  partyData
-) {
+import { getPartyData, getUser, getUserDataById } from '../apiRequests';
+import { getAuthenticated, getQuestStartThreshold } from './getProperties';
+import { QuestStatus } from './questType';
+
+const getQuestsWithLinks = (
+  quests: any,
+  currentQuestStatus: QuestStatus,
+  participationPercentage: any,
+  userData: any,
+  partyData: any
+) => {
   const ownedQuestEntries = Object.entries(quests).filter(
-    (questEntry) => questEntry[1] > 0
+    (questEntry) => (questEntry[1] as number) > 0
   );
 
   const questsWithLinks = ownedQuestEntries.map((questEntry) => ({
     name: questEntry[0],
     count: questEntry[1],
     links: {
-      ...(currentQuestStatus === 'IDLE' && {
+      ...(currentQuestStatus === QuestStatus.IDLE && {
         invite: `${ScriptApp.getService().getUrl()}/invite?questKey=${questEntry[0]}&groupId=${partyData.id}`,
       }),
-      ...(currentQuestStatus === 'INVITATIONS_SENT' &&
+      ...(currentQuestStatus === QuestStatus.INVITATIONS_SENT &&
         participationPercentage >= getQuestStartThreshold() &&
         userData.id === partyData.quest.leader && {
           start: `${ScriptApp.getService().getUrl()}/start?groupId=${partyData.id}`,
@@ -25,16 +29,16 @@ function getQuestsWithLinks(
   }));
 
   return questsWithLinks;
-}
+};
 
-function getPartyLeaderActions(
-  userData,
-  partyData,
-  currentQuestStatus,
-  participationPercentage
-) {
+const getPartyLeaderActions = (
+  userData: any,
+  partyData: any,
+  currentQuestStatus: QuestStatus,
+  participationPercentage: any
+) => {
   const partyLeaderActions = {
-    ...(currentQuestStatus === 'INVITATIONS_SENT' &&
+    ...(currentQuestStatus === QuestStatus.INVITATIONS_SENT &&
       participationPercentage >= getQuestStartThreshold() &&
       partyData.leader.id === userData.id && {
         start: `${ScriptApp.getService().getUrl()}/start?groupId=${partyData.id}`,
@@ -42,11 +46,36 @@ function getPartyLeaderActions(
   };
 
   return partyLeaderActions;
+};
+
+interface MainDataAuth {
+  authenticated: boolean;
+  profileName: string;
+  username: string;
+  quests: any;
+  currentQuest: {
+    name: string;
+    ownerProfileName: string;
+    status: QuestStatus;
+    participatingMemberCount: number;
+    participationPercentage: number;
+    partyLeaderActions: any;
+  };
+  party: {
+    name: string;
+    memberCount: number;
+  };
+  settings: {
+    questStartThreshold: number;
+  };
 }
 
-function getCurrentQuestData() {}
+interface MainDataNoAuth {
+  authenticated: boolean;
+  message: string;
+}
 
-function getMainPageData() {
+export const getMainPageData = (): MainDataAuth | MainDataNoAuth => {
   try {
     const userData = getUser();
 
@@ -64,12 +93,12 @@ function getMainPageData() {
 
     const currentQuestStatus = (() => {
       if (!partyData.quest.key) {
-        return 'IDLE';
+        return QuestStatus.IDLE;
       }
       if (partyData.quest.active) {
-        return 'IN_PROGRESS';
+        return QuestStatus.IN_PROGRESS;
       }
-      return 'INVITATIONS_SENT';
+      return QuestStatus.INVITATIONS_SENT;
     })();
 
     const quests = getQuestsWithLinks(
@@ -110,10 +139,10 @@ function getMainPageData() {
     };
 
     return dataForTemplate;
-  } catch (e) {
+  } catch (e: any) {
     return {
       authenticated: getAuthenticated(),
       message: `Error: ${e.message}`,
     };
   }
-}
+};

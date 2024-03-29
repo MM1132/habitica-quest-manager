@@ -1,7 +1,9 @@
 // Get the data that every page should have access to
 // For example: the name of the script
 
-const getGlobalPageData = () => {
+import { SCRIPT_NAME } from '../doApiRequest';
+
+export const getGlobalPageData = () => {
   return {
     scriptName: SCRIPT_NAME,
     mainPageUrl: `${ScriptApp.getService().getUrl()}`,

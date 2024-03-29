@@ -1,25 +1,14 @@
-/* case "test":
-return HtmlService.createHtmlOutput(`
-  <p>Testing the test page thoroughly...</p>
-  <form action="${ScriptApp.getService().getUrl()}" method='get' id='back-to-main-page'></form>
-  <script>document.getElementById('back-to-main-page').submit();</script>
-`); */
+import { forceStartQuest, inviteMembersToQuest } from './apiRequests';
+import { getAuthenticated } from './data/getProperties';
 
-// const userId = PropertiesService.getScriptProperties().getProperty("userId");
-// const apiToken = PropertiesService.getScriptProperties().getProperty("apiToken");
-
-// if (!userId || !apiToken) {
-//   return HtmlService.createTemplateFromFile("pages/login/page").evaluate().setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-// }
-
-function backToMainPage(message) {
+function backToMainPage(message: string) {
   return HtmlService.createHtmlOutput(`
     <p>${message}</p>
     <a href="${ScriptApp.getService().getUrl()}">Click here to return to the main page</a>
   `);
 }
 
-function authGuard(endpoint) {
+function authGuard(endpoint: () => any) {
   const authenticated = getAuthenticated();
 
   if (!authenticated) {
@@ -31,18 +20,18 @@ function authGuard(endpoint) {
   return endpoint();
 }
 
-function doGet(e) {
+export function doGet(e: GoogleAppsScript.Events.DoGet) {
   switch (e.pathInfo) {
     /* ACTIONS */
     case 'start': {
-      forceStartQuest(e.parameters.groupId);
+      forceStartQuest(e.parameter.groupId);
 
       return backToMainPage(
         'The system sent out a signal to force the start of the current quest...'
       );
     }
     case 'invite': {
-      const { groupId, questKey } = e.parameters;
+      const { groupId, questKey } = e.parameter;
 
       inviteMembersToQuest(groupId, questKey);
 
