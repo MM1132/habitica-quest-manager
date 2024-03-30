@@ -1,10 +1,11 @@
-# Awesome Quest Manager v1.1
+# Awesome Quest Manager
 
-- ***NB!** The UserID and ApiToken are stored in the PropertiesService of the Google Apps Script, which means that ONLY YOU will have access to them when they are entered into the Setup form of the Quest Manager. You should NEVER enter your UserID and ApiToken on a Quest Manager that anyone else other than yourself has Deployed.*
+> ***NB!** The UserID and ApiToken are stored in the PropertiesService of the Google Apps Script, which means that ONLY YOU will have access to them when they are entered into the Setup form of the Quest Manager. You should NEVER enter your UserID and ApiToken on a Quest Manager that anyone else other than yourself has Deployed.*
 
-*Scroll down to the [Installation](#installation) section for setup instructions.*
+This is a **Google Apps Script** integrating with [Habitica](https://habitica.com/). Once set up, it allows your party members to send invitations for, and start quests from, your inventory. It requires only a single deploy, and doesn't require the user to change anything manually in the code. All the settings are available in the UI of the deployed page. Once the script is deployed, the user can simply enter their UserID and ApiToken into the form on the Setup page of the Deployed website, then share the URL of the page with their party. It's that simple! 
 
-This is a **Google App's Script** integrating with [Habitica](https://habitica.com/). It allows your party members to send invitations for, and start quests from, your inventory. It requires only a single deploy, and doesn't require the user to change anything manually in the code. All the settings are available in the UI of the deployed page. Once the script is deployed, the user can simply enter their UserID and ApiToken into the form on the Setup page of the Deployed website, then share the URL with their party. It's that simple! 
+- *Scroll down to the [Installation](#installation) section for setup instructions.*
+- *If you want to contrubute to the project, head over to the [For Developers](#for-developers) section.*
 
 ## Features
 - **Send invitations and start quests**
@@ -14,7 +15,7 @@ This is a **Google App's Script** integrating with [Habitica](https://habitica.c
 - **Settings page for extra tweaks**
 - **Extra actions for Party Leaders**
 
-## Preview Images
+## Preview Images (v1.0)
 
 Setup | Main | Settings | 
 :-:|:-:|:-:
@@ -45,3 +46,19 @@ You will need to be logged into a Google Account for this to work
 20. Once the setup is done, share the same link you just copied with your party members. Woohoo! :) 
 
 I would appreciate it a lot if anyone has a moment to try this out and give some feedback on how the instructions are to follow <3
+
+## For Developers
+Hello devs! The Google Apps Script(GAS) project is written in TypeScript using ES6 modules. For deploying, we convert the TypeScript over to JavaScript, we merge all the JavaScript files into a single file, and then remove all imports/exports (since GAS doesn't support them). The tools used for this are TypeScript compiler (tsc) and Gulp. 
+
+### Simple setup
+> Make sure you have the following tools: git, npm, clasp
+
+1. Perform a `git clone`
+2. `npm i`
+3. Create a new Google Apps Script project
+4. Place the ID of the created project into the `clasp.json` file under the `scriptId` field. 
+5. Change the `rootDir` in `clasp.json` according to the project location on your computer
+6. Compile the project with `npm run build`
+7. Push the app to Google by `clasp push`
+
+Now you are free to change any code, build the project, and push it to Google's servers. Woohoo! :) 

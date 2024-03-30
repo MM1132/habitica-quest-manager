@@ -1,9 +1,9 @@
 {
   "scripts": {
     "build": "tsc && gulp",
+    "push": "clasp push",
     "lint": "eslint --ext .ts .",
-    "lint:fix": "eslint --ext .ts --fix .",
-    "clean": "tsc --build --clean"
+    "lint:fix": "eslint --ext .ts --fix ."
   },
   "devDependencies": {
     "@types/google-apps-script": "^1.0.82",
