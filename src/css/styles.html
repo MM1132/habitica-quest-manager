@@ -4,6 +4,7 @@
     --color-light-2: rgb(240, 240, 240);
     --color-light-3: rgb(207, 207, 207);
     --color-dark: black;
+    --color-dark-2: rgba(29, 29, 29, 0.12);
     --color-primary-dark: #f08b2c;
     --color-primary-dark-2: #df7512;
     --color-primary-hover: #cb6a15;
@@ -80,7 +81,7 @@
 
   .section {
     background-color: var(--color-light-2);
-    box-shadow: 0 1px 3px 0 rgba(26,24,29,.12), 0 1px 2px 0 rgba(26,24,29,.24);
+    box-shadow: 0 1px 3px 0 var(--color-dark-2), 0 1px 2px 0 var(--color-dark-2);
     padding: 10px;
     border-radius: 5px;
   }
@@ -155,5 +156,35 @@
 
   .warning-text {
     color: var(--color-text-info);
+  }
+
+  .quest-list-container {
+    gap: 10px;
+    flex-wrap: wrap;
+    display: flex;
+  }
+
+  .quest-card:hover {
+    background-color: var(--color-primary-light-2);
+  }
+
+  .quest-card {
+    cursor: pointer;
+    flex-grow: 1;
+    flex-basis: fit-content;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 5px;
+    background-color: var(--color-light);
+    box-shadow: 0 1px 3px 0 var(--color-dark-2), 0 1px 2px 0 var(--color-dark-2);
+    border-radius: 5px;
+    padding: 15px;
+  }
+
+  .quest-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: underline;
   }
 </style>

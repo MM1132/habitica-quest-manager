@@ -1,52 +1,8 @@
-import { getPartyData, getUser, getUserDataById } from '../apiRequests';
-import { getAuthenticated, getQuestStartThreshold } from './getProperties';
-import { QuestStatus } from './questType';
-
-const getQuestsWithLinks = (
-  quests: any,
-  currentQuestStatus: QuestStatus,
-  participationPercentage: any,
-  userData: any,
-  partyData: any
-) => {
-  const ownedQuestEntries = Object.entries(quests).filter(
-    (questEntry) => (questEntry[1] as number) > 0
-  );
-
-  const questsWithLinks = ownedQuestEntries.map((questEntry) => ({
-    name: questEntry[0],
-    count: questEntry[1],
-    links: {
-      ...(currentQuestStatus === QuestStatus.IDLE && {
-        invite: `${ScriptApp.getService().getUrl()}/invite?questKey=${questEntry[0]}&groupId=${partyData.id}`,
-      }),
-      ...(currentQuestStatus === QuestStatus.INVITATIONS_SENT &&
-        participationPercentage >= getQuestStartThreshold() &&
-        userData.id === partyData.quest.leader && {
-          start: `${ScriptApp.getService().getUrl()}/start?groupId=${partyData.id}`,
-        }),
-    },
-  }));
-
-  return questsWithLinks;
-};
-
-const getPartyLeaderActions = (
-  userData: any,
-  partyData: any,
-  currentQuestStatus: QuestStatus,
-  participationPercentage: any
-) => {
-  const partyLeaderActions = {
-    ...(currentQuestStatus === QuestStatus.INVITATIONS_SENT &&
-      participationPercentage >= getQuestStartThreshold() &&
-      partyData.leader.id === userData.id && {
-        start: `${ScriptApp.getService().getUrl()}/start?groupId=${partyData.id}`,
-      }),
-  };
-
-  return partyLeaderActions;
-};
+import { getPartyData, getUser, getUserDataById } from '../../apiRequests';
+import { getQuestByName } from '../../quests/questList';
+import { getAuthenticated, getQuestStartThreshold } from '../getProperties';
+import { QuestStatus } from '../questType';
+import { getPartyLeaderActions, getQuestsWithLinks } from './partyData';
 
 interface MainDataAuth {
   authenticated: boolean;
@@ -123,6 +79,7 @@ export const getMainPageData = (): MainDataAuth | MainDataNoAuth => {
       quests,
       currentQuest: {
         name: partyData.quest.key,
+        data: getQuestByName(partyData.quest.key),
         ownerProfileName: questOwnerProfileName,
         status: currentQuestStatus,
         participatingMemberCount,

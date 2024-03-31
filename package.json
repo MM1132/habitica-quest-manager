@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "tsc && gulp",
-    "push": "clasp push",
+    "push": "npm run build && clasp push",
     "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --ext .ts --fix ."
   },

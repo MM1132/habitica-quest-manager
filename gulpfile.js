@@ -17,7 +17,7 @@ gulp.task('bundle', function() {
 });
 
 gulp.task('copy-files', function() {
-  return gulp.src(['src/**/*', '!src/ts/**']) // Copy everything except JS files
+  return gulp.src(['src/**/*', '!src/ts/**', '!src/**/_*/**', '!src/**/_*']) // Copy everything except JS files
     .pipe(gulp.dest('dist'));
 });
 
