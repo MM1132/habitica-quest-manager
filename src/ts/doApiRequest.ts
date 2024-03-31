@@ -1,6 +1,6 @@
 // --- DON'T CHANGE, SCRIPT DETAILS ---
 const AUTHOR_ID = '90c987f2-cf51-442f-b932-3c4194d56ad6';
-export const SCRIPT_NAME = `Quest Manager v1.1`;
+export const SCRIPT_NAME = `Quest Manager v1.2`;
 
 type HttpMethod = 'get' | 'delete' | 'patch' | 'post' | 'put';
 
