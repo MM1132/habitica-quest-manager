@@ -6,6 +6,7 @@ export interface GlobalPageData {
   mainPageUrl: string;
   settingsPageUrl: string;
   setupPageUrl: string;
+  partyQuestsPageUrl: string;
 }
 
 export const getGlobalPageData = (): GlobalPageData => {
@@ -15,5 +16,6 @@ export const getGlobalPageData = (): GlobalPageData => {
     mainPageUrl: `${ScriptApp.getService().getUrl()}`,
     settingsPageUrl: `${ScriptApp.getService().getUrl()}/settings`,
     setupPageUrl: `${ScriptApp.getService().getUrl()}/setup`,
+    partyQuestsPageUrl: `${ScriptApp.getService().getUrl()}/party-quests`,
   };
 };

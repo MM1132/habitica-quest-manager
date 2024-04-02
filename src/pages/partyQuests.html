@@ -1,0 +1,26 @@
+<? const { quests } = getPartyQuestsPageData(); ?>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('css/styles'); ?>
+  </head>
+
+  <body>
+    <?!= include('pages/components/header'); ?>
+
+    <main>
+      <div class="section">
+        <h2>All quests of your Party</h2>
+        <ol>
+          <? for(let i = 0; i < quests.length; i++) { ?>
+            <li>
+              <strong><?= quests[i].name ?></strong> (<?= quests[i].count ?>)
+            </li>
+          <? } ?>
+        </ol>
+      </div>
+    </main>
+  </body>
+</html>

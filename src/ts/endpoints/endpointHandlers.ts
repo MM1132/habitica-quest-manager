@@ -42,3 +42,11 @@ export const getSettingsHandler = () => {
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   });
 };
+
+export const getPartyQuestsHandler = () => {
+  return authGuard(() => {
+    return HtmlService.createTemplateFromFile('pages/partyQuests')
+      .evaluate()
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  });
+};

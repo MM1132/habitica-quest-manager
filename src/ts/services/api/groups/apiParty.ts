@@ -5,7 +5,9 @@ export interface ApiParty {
   };
   quest: {
     leader: string | null;
-    members: string[];
+    members: {
+      [key: string]: boolean;
+    };
     key: string | null;
     active: boolean;
   };
