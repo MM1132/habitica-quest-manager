@@ -1,21 +1,29 @@
-import { getPartyData, getUser, getUserDataById } from '../../apiRequests';
-import { getQuestByName } from '../../quests/questList';
-import { getAuthenticated, getQuestStartThreshold } from '../getProperties';
-import { QuestStatus } from '../questType';
-import { getPartyLeaderActions, getQuestsWithLinks } from './partyData';
+import { getPartyData } from '../../services/api/groups/apiGroupsService';
+import { getUserDataById } from '../../services/api/members/apiMembersService';
+import { getUser } from '../../services/api/user/apiUserService';
+import { Quest, getQuestByName } from '../../services/local/questService';
+import { getAuthenticated } from '../../services/properties/authPropertyService';
+import { getQuestStartThreshold } from '../../services/properties/settingsPropertyService';
+import {
+  PartyLeaderActions,
+  getPartyLeaderActions,
+} from './getPartyLeaderActions';
+import { QuestWithLinks, getQuestsWithLinks } from './getQuestsWithLinks';
+import { QuestStatus } from './questTypes';
 
 interface MainDataAuth {
   authenticated: boolean;
   profileName: string;
   username: string;
-  quests: any;
+  quests: QuestWithLinks[];
   currentQuest: {
-    name: string;
-    ownerProfileName: string;
+    name: string | null;
+    data: Quest | null;
+    ownerProfileName: string | null;
     status: QuestStatus;
     participatingMemberCount: number;
     participationPercentage: number;
-    partyLeaderActions: any;
+    partyLeaderActions: PartyLeaderActions;
   };
   party: {
     name: string;
@@ -34,8 +42,8 @@ interface MainDataNoAuth {
 export const getMainPageData = (): MainDataAuth | MainDataNoAuth => {
   try {
     const userData = getUser();
-
     const partyData = getPartyData();
+
     const questOwnerProfileName = !partyData.quest.leader
       ? null
       : getUserDataById(partyData.quest.leader).profile.name;
@@ -79,7 +87,10 @@ export const getMainPageData = (): MainDataAuth | MainDataNoAuth => {
       quests,
       currentQuest: {
         name: partyData.quest.key,
-        data: getQuestByName(partyData.quest.key),
+        data:
+          partyData.quest.key !== null
+            ? getQuestByName(partyData.quest.key)
+            : null,
         ownerProfileName: questOwnerProfileName,
         status: currentQuestStatus,
         participatingMemberCount,

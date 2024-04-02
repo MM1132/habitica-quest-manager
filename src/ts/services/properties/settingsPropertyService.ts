@@ -14,3 +14,11 @@ export const updateSettings = (
     questStartThreshold
   );
 };
+
+export const getQuestStartThreshold = (): number => {
+  const thresholdProperty = PropertiesService.getScriptProperties().getProperty(
+    'questStartThreshold'
+  );
+
+  return Number(thresholdProperty);
+};

@@ -2,7 +2,7 @@ export interface Quest {
   drop: { gp: number; exp: number; items?: number };
 }
 
-export interface QuestList {
+export interface QuestsData {
   [key: string]: Quest;
 }
 
@@ -114,7 +114,7 @@ const questList = {
   dilatory: { drop: { gp: 0, exp: 0, items: 12 } },
   dysheartener: { drop: { gp: 0, exp: 0, items: 12 } },
   stressbeast: { drop: { gp: 0, exp: 0, items: 12 } },
-} as QuestList;
+} as QuestsData;
 
 export const getQuestByName = (name: string): Quest => {
   return questList[name];

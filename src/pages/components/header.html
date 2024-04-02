@@ -1,0 +1,19 @@
+<? const globalData = getGlobalPageData(); ?>
+
+<div class="header">
+  <div class="header-title">
+    <h4>
+      <?= globalData.scriptName ?> 
+      <u>
+        <?= globalData.scriptVersion ?>
+      </u>
+    </h4>
+    <i>by <a class="link" href="https://habitica.com/profile/90c987f2-cf51-442f-b932-3c4194d56ad6">Kanguste</a></i>
+  </div>
+  <nav>
+    <ul class="navigation-buttons">
+      <li><a class="button" href="<?= globalData.mainPageUrl ?>">Main</a></li>
+      <li><a class="button" href="<?= globalData.settingsPageUrl ?>">Settings</a></li>
+    </ul>
+  </nav>
+</div>
