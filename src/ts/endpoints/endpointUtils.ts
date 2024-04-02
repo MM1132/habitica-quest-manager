@@ -10,7 +10,7 @@ export const backToMainPage = (message: string) => {
   `);
 };
 
-export const authGuard = (endpoint: () => any) => {
+export const authGuard = (endpoint: () => GoogleAppsScript.HTML.HtmlOutput) => {
   const authenticated = getAuthenticated();
 
   if (!authenticated) {

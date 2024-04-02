@@ -5,23 +5,19 @@ import {
   getStartHandler,
   getTestHandler,
 } from './endpoints/endpointHandlers';
-import { backToMainPage } from './endpoints/endpointUtils';
+import { Router } from './endpoints/router';
+
+const router = new Router();
+router.get('', getMainHandler);
+router.get('start', getStartHandler);
+router.get('invite', getInviteHandler);
+router.get('test', getTestHandler);
+router.get('settings', getSettingsHandler);
 
 export function doGet(e: GoogleAppsScript.Events.DoGet) {
-  let { pathInfo } = e;
-  pathInfo = pathInfo || '';
+  return router.handleGet(e);
+}
 
-  const endpoints = {
-    '': getMainHandler,
-    start: getStartHandler,
-    invite: getInviteHandler,
-    test: getTestHandler,
-    settings: getSettingsHandler,
-  };
-
-  if (!endpoints[pathInfo]) {
-    return backToMainPage(`Invalid path: '${pathInfo}'`);
-  }
-
-  return endpoints[pathInfo](e);
+export function doPost(e: GoogleAppsScript.Events.DoPost) {
+  return router.handlePost(e);
 }

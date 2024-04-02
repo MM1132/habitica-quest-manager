@@ -12,8 +12,8 @@ gulp.task('bundle', function() {
         preseveNamedDeclaration: true
       }]]
     }))
-    .pipe(concat('bundle.js'))
-    .pipe(gulp.dest('dist'));
+    //.pipe(concat('bundle.js'))
+    .pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('copy-files', function() {
