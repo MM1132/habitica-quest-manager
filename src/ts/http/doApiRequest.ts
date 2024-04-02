@@ -1,22 +1,34 @@
-// --- DON'T CHANGE, SCRIPT DETAILS ---
-const AUTHOR_ID = '90c987f2-cf51-442f-b932-3c4194d56ad6';
-export const SCRIPT_NAME = `Quest Manager v1.2`;
+import { AUTHOR_ID, SCRIPT_NAME } from '../services/local/constants';
 
-type HttpMethod = 'get' | 'delete' | 'patch' | 'post' | 'put';
+export enum HttpMethod {
+  GET = 'get',
+  DELETE = 'delete',
+  PATCH = 'patch',
+  POST = 'post',
+  PUT = 'put',
+}
 
 export interface ApiRequestParams {
   method: HttpMethod;
   payload?: any;
 }
 
-export const doApiRequest = (url: string, params: ApiRequestParams) => {
+export interface ApiError {
+  success: boolean;
+  message: string;
+}
+
+export const doApiRequest = <RETURN_TYPE>(
+  url: string,
+  params: ApiRequestParams
+): RETURN_TYPE => {
   const USER_ID =
     PropertiesService.getScriptProperties().getProperty('userId') || '';
   const API_TOKEN =
     PropertiesService.getScriptProperties().getProperty('apiToken') || '';
 
   const HEADERS = {
-    'x-client': `${AUTHOR_ID}-Quest Manager`,
+    'x-client': `${AUTHOR_ID}-${SCRIPT_NAME}`,
     'x-api-user': USER_ID,
     'x-api-key': API_TOKEN,
   };
@@ -36,7 +48,7 @@ export const doApiRequest = (url: string, params: ApiRequestParams) => {
       'authenticated',
       'false'
     );
-    throw parsedJson;
+    throw parsedJson as ApiError;
   }
 
   return parsedJson.data;

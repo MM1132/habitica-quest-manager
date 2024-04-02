@@ -1,5 +1,4 @@
 <? const data = getMainPageData(); ?>
-<? const globalData = getGlobalPageData(); ?>
 
 <!DOCTYPE html>
 <html>
@@ -10,23 +9,9 @@
 </head>
 
 <body>
-  <div class="header">
-    <div class="header-title">
-      <h4>
-        <?= globalData.scriptName ?>
-      </h4>
-      <i>by <a class="link" href="https://habitica.com/profile/90c987f2-cf51-442f-b932-3c4194d56ad6">Kanguste</a></i>
-    </div>
-    <nav>
-      <ul class="navigation-buttons">
-        <li><a class="button" href="<?= globalData.mainPageUrl ?>">Main</a></li>
-        <li><a class="button" href="<?= globalData.settingsPageUrl ?>">Settings</a></li>
-      </ul>
-    </nav>
-  </div>
+  <?!= include('pages/components/header'); ?>
 
   <main>
-    <? if(data.authenticated) { ?>
     <div class="section">
       <h2>Profile</h2>
       <div class="section-content">
@@ -153,19 +138,6 @@
         </div>
       </div>
     </div>
-    <? } else { ?>
-    <div class="section">
-      <h2>Authentication</h2>
-      <div class="section-content">
-        <p>You are either not authenticated or your entered credentials are not valid. </p>
-        <p>Please authenticate yourself on the <a href="<?= globalData.setupPageUrl ?>">setup</a> page to see the
-          content.</p>
-        <p class="warning-text">
-          <?= data.message ?>
-        </p>
-      </div>
-    </div>
-    <? } ?>
   </main>
 </body>
 

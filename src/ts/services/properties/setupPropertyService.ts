@@ -1,4 +1,4 @@
-import { getUser } from '../apiRequests';
+import { getUser } from '../api/user/apiUserService';
 
 export const setSetupData = (
   password: string,
@@ -9,10 +9,10 @@ export const setSetupData = (
   PropertiesService.getScriptProperties().setProperty('userId', userId);
   PropertiesService.getScriptProperties().setProperty('apiToken', apiToken);
 
-  const user = getUser();
-
-  if (user.success === false) {
-    throw new Error(user.message);
+  try {
+    getUser();
+  } catch (e: any) {
+    throw new Error(e.message);
   }
 
   PropertiesService.getScriptProperties().setProperty(
