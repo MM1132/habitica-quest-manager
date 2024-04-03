@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const QUEST_GENERIC = require('./quests/generic').QUEST_GENERIC;
 const QUEST_MASTERCLASSER = require('./quests/masterclasser').QUEST_MASTERCLASSER;
 const QUEST_PETS = require('./quests/pets').QUEST_PETS;
@@ -24,20 +26,38 @@ const allQuestsFilteredList = Object.entries(allQuests).map(([key, value]) => {
   let drop = {
     gp: value.drop.gp,
     exp: value.drop.exp,
-  }
-
-  if (value.drop.items) {
-    drop.items = value.drop.items.length;
+    items: value.drop.items,
   }
 
   return [
     key,
     {
+      key,
+      name: value.text,
       drop,
     },
   ];
 });
-
 const allQuestsFiltered = Object.fromEntries(allQuestsFilteredList);
 
+// Writing to a file
+
 console.log(allQuestsFiltered);
+
+function objectToJS(obj) {
+  const props = Object.keys(obj).map(key => {
+    const value = obj[key];
+    // Assuming value is either a string or a number for simplicity
+    return typeof value === 'string' ? `${key}: "${value}"` : `${key}: ${value}`;
+  }).join(', ');
+  
+  return `{ ${props} }`;
+}
+
+// Convert the object to a JavaScript object literal string
+const jsContent = `var myObj = ${objectToJS(allQuestsFiltered)};`;
+
+fs.writeFile('myObj.js', jsContent, (err) => {
+  if (err) throw err;
+  console.log('File has been saved.');
+});
