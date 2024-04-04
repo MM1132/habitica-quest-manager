@@ -1,3 +1,7 @@
+export interface QuestManagerSettings {
+  questStartThreshold: number;
+}
+
 export const updateSettings = (
   password: string,
   questStartThreshold: string
@@ -21,4 +25,12 @@ export const getQuestStartThreshold = (): number => {
   );
 
   return Number(thresholdProperty);
+};
+
+export const getQuestManagerSettings = (): QuestManagerSettings => {
+  const threshold = getQuestStartThreshold();
+
+  return {
+    questStartThreshold: threshold,
+  };
 };

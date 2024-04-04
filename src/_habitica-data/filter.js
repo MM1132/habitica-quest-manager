@@ -44,20 +44,10 @@ const allQuestsFiltered = Object.fromEntries(allQuestsFilteredList);
 
 console.log(allQuestsFiltered);
 
-function objectToJS(obj) {
-  const props = Object.keys(obj).map(key => {
-    const value = obj[key];
-    // Assuming value is either a string or a number for simplicity
-    return typeof value === 'string' ? `${key}: "${value}"` : `${key}: ${value}`;
-  }).join(', ');
-  
-  return `{ ${props} }`;
-}
-
 // Convert the object to a JavaScript object literal string
-const jsContent = `var myObj = ${objectToJS(allQuestsFiltered)};`;
+const jsData = `var myObj = ${{...allQuestsFiltered}};`;
 
-fs.writeFile('myObj.js', jsContent, (err) => {
+fs.writeFile('myObj.js', jsData, (err) => {
   if (err) throw err;
   console.log('File has been saved.');
 });
