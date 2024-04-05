@@ -20,5 +20,9 @@ const importedQuestList: LocalQuestsData = {
 };
 
 export const getLocalQuestByKey = (name: string): LocalQuest => {
-  return importedQuestList[name];
+  const importedQuest = importedQuestList[name];
+  if (!importedQuest.drop.items) {
+    importedQuest.drop.items = [];
+  }
+  return importedQuest;
 };

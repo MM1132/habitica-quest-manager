@@ -9,6 +9,23 @@
 </head>
 
 <body>
+  <script>
+    window.onload = () => {
+      const questCards = document.getElementsByClassName('quest-card');
+
+      console.log("ELements: ", questCards.length);
+
+      for (let i = 0; i < questCards.length; i++) {
+        questCards[i].addEventListener('click', () => {
+          console.log(`${i} was clicked`);
+
+          const questCardContent = document.getElementById(`quest-card-content-${i}`);
+          questCardContent.classList.toggle('quest-card-active');
+        });
+      }
+    }
+  </script>
+
   <?!= include('pages/components/header') ?>
 
   <main>
@@ -60,9 +77,9 @@
                 <strong>Items:</strong>
                 <ul>
                   <? for(let i = 0; i < data.currentQuest.drop.items.length; i++) { ?>
-                    <li>
-                      <?= data.currentQuest.drop.items[i].text ?>
-                    </li>
+                  <li>
+                    <?= data.currentQuest.drop.items[i].text ?>
+                  </li>
                   <? } ?>
                 </ul>
               </li>
@@ -92,29 +109,51 @@
       <div class="section-content">
         <div class="quest-list-container">
           <? for(let i = 0; i < data.quests.length; i++) { ?>
-            <div class="quest-card">
-              <!-- Base information -->
-              <h3 class="quest-card-title">
-                <?= data.quests[i].text ?> (<?= data.quests[i].count ?>)
-              </h3>
-              <div>
-                <strong>Gold: </strong>
-                <?= data.quests[i].drop.gp ?>
-              </div>
-              <div>
-                <strong>Exp: </strong>
-                <?= data.quests[i].drop.exp ?>
-              </div>
-          
+          <div class="quest-card">
+            <!-- Base information -->
+            <h3 class="quest-card-title">
+              <?= data.quests[i].text ?> (<?= data.quests[i].count ?>)
+            </h3>
+
+            <div class="quest-card-content" id="quest-card-content-<?= i ?>">
               <!-- Quest status if it's the currently active quest -->
               <div>
                 <? if (data.quests[i].key === data.currentQuest.key) { ?>
-                  <strong>
-                    (<?= data.currentQuest.status ?>)
-                  </strong>
+                <strong>
+                  (
+                  <?= data.currentQuest.status ?>)
+                </strong>
                 <? } ?>
               </div>
-            
+
+              <ul>
+                <li>
+                  <strong>Count:</strong>
+                  <?= data.quests[i].count ?>
+                </li>
+                <li>
+                  <strong>Drops:</strong>
+                  <ul>
+                    <li>
+                      <strong>Gold:</strong>
+                      <?= data.quests[i].drop.gp ?>
+                    </li>
+                    <li>
+                      <strong>Exp:</strong>
+                      <?= data.quests[i].drop.exp ?>
+                    </li>
+                    <li>
+                      <strong>Items:</strong>
+                      <ul>
+                        <? for(let j = 0; j < data.quests[i].drop.items.length; j++) { ?>
+                          <li><?= data.quests[i].drop.items[j].text ?></li>
+                        <? } ?>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              
               <!-- Possible action -->
               <div>
                 <? if ("invite" in data.quests[i].links) { ?>
@@ -126,10 +165,11 @@
                   Start this quest
                 </a>
                 <? } else { ?>
-                <i>no actions available</i>
+                  <i>no actions available</i>
                 <? } ?>
               </div>
             </div>
+          </div>
           <? } ?>
         </div>
       </div>

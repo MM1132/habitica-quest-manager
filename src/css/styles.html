@@ -4,7 +4,9 @@
     --color-light-2: rgb(240, 240, 240);
     --color-light-3: rgb(207, 207, 207);
     --color-dark: black;
-    --color-dark-2: rgba(29, 29, 29, 0.12);
+    --color-dark-2: rgba(10, 10, 10);
+    --color-dark-3: rgba(29, 29, 29, 0.12);
+    --color-primary-opacity: #c3671199;
     --color-primary-dark: #f08b2c;
     --color-primary-dark-2: #df7512;
     --color-primary-hover: #cb6a15;
@@ -81,7 +83,7 @@
 
   .section {
     background-color: var(--color-light-2);
-    box-shadow: 0 1px 3px 0 var(--color-dark-2), 0 1px 2px 0 var(--color-dark-2);
+    box-shadow: 0 1px 3px 0 var(--color-dark-3), 0 1px 2px 0 var(--color-dark-3);
     padding: 10px;
     border-radius: 5px;
   }
@@ -160,7 +162,7 @@
 
   .quest-list-container {
     gap: 10px;
-    flex-wrap: wrap;
+    flex-direction: column;
     display: flex;
   }
 
@@ -172,19 +174,65 @@
     cursor: pointer;
     flex-grow: 1;
     flex-basis: fit-content;
-    display: inline-flex;
-    flex-direction: column;
     gap: 5px;
     background-color: var(--color-light);
-    box-shadow: 0 1px 3px 0 var(--color-dark-2), 0 1px 2px 0 var(--color-dark-2);
+    box-shadow: 0 1px 3px 0 var(--color-dark-3), 0 1px 2px 0 var(--color-dark-3);
     border-radius: 5px;
     padding: 15px;
   }
 
   .quest-card-title {
-    font-size: 20px;
-    font-weight: 700;
-    text-align: center;
-    text-decoration: underline;
+    font-size: 14px;
   }
+
+  /* MODAL THINGS { */
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--color-primary-opacity);
+  }
+
+  .modal-content {
+    background-color: var(--color-light);
+    margin: 15% auto;
+    padding: 20px;
+    width: 80%;
+    border-radius: 8px;
+    box-shadow: 0 1px 10px 1px var(--color-dark), 0 5px 20px 5px var(--color-dark-3)
+  }
+
+  .close-modal {
+    color: var(--color-dark);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close-modal:hover {
+    color: var(--color-primary-dark);
+    cursor: pointer;
+  }
+
+  .modal-title-bar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .quest-card-content {
+    transition: 0.5s;
+    display: none;
+  }
+  
+  .quest-card-active {
+    display: block;
+  }
+
+  /* } MODAL THINGS */
 </style>
