@@ -13,4 +13,7 @@ export interface ApiUser {
       [key: string]: number;
     };
   };
+  party: {
+    _id: string;
+  };
 }

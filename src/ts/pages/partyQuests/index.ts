@@ -1,5 +1,6 @@
-import { getPartyData } from '../../services/api/groups/apiGroupsService';
+import { getPartyMembers } from '../../services/api/groups/apiGroupsService';
 import { getUserDataById } from '../../services/api/members/apiMembersService';
+import { getUser } from '../../services/api/user/apiUserService';
 
 export interface PartyQuest {
   name: string;
@@ -11,11 +12,10 @@ export interface PartyQuestsData {
 }
 
 export const getPartyQuestsPageData = () => {
-  const {
-    quest: { members },
-  } = getPartyData();
+  const userData = getUser();
+  const partyMembers = getPartyMembers(userData.party._id);
 
-  const memberIds = Object.keys(members);
+  const memberIds = partyMembers.map(({ id }) => id);
 
   const memberDetailsList = memberIds.map((memberId) =>
     getUserDataById(memberId)

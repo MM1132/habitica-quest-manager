@@ -7,6 +7,7 @@ import { getQuestStartThreshold } from '../../services/properties/settingsProper
 import { QuestStatus } from './questTypes';
 
 export interface CustomQuestData {
+  key: string;
   count: number;
 }
 
@@ -85,6 +86,7 @@ export const assembleQuestWithLinks = (
       const localQuestData = getLocalQuestByKey(questKey);
 
       const customData: CustomQuestData = {
+        key: questKey,
         count: questCount,
       };
 
@@ -105,6 +107,12 @@ export const assembleQuestWithLinks = (
         ...customData,
         links,
       };
+    })
+    .sort((a, b) => {
+      const aValue = a.drop.exp + a.drop.gp;
+      const bValue = b.drop.exp + b.drop.gp;
+
+      return bValue - aValue;
     });
 
   return {
