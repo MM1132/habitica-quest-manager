@@ -1,0 +1,74 @@
+<? const globalData = getGlobalPageData(); ?>
+
+<? const page = 'main'; ?>
+
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('css/styles') ?>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="header-title">
+        <h4>
+          <?= globalData.scriptName ?> 
+          <u>
+            <?= globalData.scriptVersion ?>
+          </u>
+        </h4>
+        <i>by <a class="link" href="https://habitica.com/profile/90c987f2-cf51-442f-b932-3c4194d56ad6">Kanguste</a></i>
+      </div>
+      <nav>
+        <ul class="navigation-buttons">
+          <li><button class="button" onclick="navigate('main')">Main</button></li>
+          <li><button class="button" onclick="navigate('settings')">Settings</button></li>
+          <li><button class="button" onclick="navigate('members')">Members <i>(WIP)</i></button></li>
+          <li><button class="button" onclick="navigate('partyQuests')">Party Quests <i>(WIP)</i></button></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div id="content"></div>
+    
+    <script>
+      window.onload = () => {
+        console.log("Initializing!");
+        navigate('main');
+      }
+
+      const disableNavigationButtons = () => {
+        document.querySelectorAll(".navigation-buttons .button").forEach(button => {
+          button.style.pointerEvents = 'none';
+        });
+      }
+
+      const enableNavigationButtons = () => {
+        document.querySelectorAll(".navigation-buttons .button").forEach(button => {
+          button.style.pointerEvents = 'auto';
+        });
+      }
+
+      function navigate(page) {
+        const content = document.getElementById('content');
+        content.innerHTML = "<?= include('pages/components/loading') ?>";
+
+        disableNavigationButtons();
+
+        google.script.run.withSuccessHandler(function(html) {
+          content.innerHTML = html;
+          enableNavigationButtons();
+
+          Array.from(content.querySelectorAll('script')).forEach(oldScript => {
+            const newScript = document.createElement('script');
+            newScript.textContent = oldScript.innerText;
+            document.head.appendChild(newScript).parentNode.removeChild(newScript);
+          });
+        }).withFailureHandler((error) => {
+          enableNavigationButtons();
+          content.innerHTML = `<h1>Failed to load page</h1><br>${error.message}`;
+        }).include('pages/' + page);
+      }
+    </script>
+  </body>
+</html>

@@ -1,35 +1,7 @@
-<? const data = getMainPageData() ?>
+<? let data = null; ?>
 
-<!DOCTYPE html>
-<html>
-
-<head>
-  <base target="_top">
-  <?!= include('css/styles') ?>
-</head>
-
-<body>
-  <script>
-    window.onload = () => {
-      const questCards = document.getElementsByClassName('quest-card');
-
-      for (let i = 0; i < questCards.length; i++) {
-        questCards[i].addEventListener('click', () => {
-          const questCardContent = document.getElementById(`quest-card-content-${i}`);
-
-          if (questCardContent.style.maxHeight) {
-            questCardContent.style.maxHeight = null;
-          } else {
-            questCardContent.style.maxHeight = questCardContent.scrollHeight + "px";
-          }
-        });
-      }
-    }
-  </script>
-
-  <?!= include('pages/components/header') ?>
-
-  <main>
+<main>
+  <? if (!!data) { ?>
     <div class="section">
       <h2>Profile</h2>
       <div class="section-content">
@@ -37,8 +9,8 @@
           <li><strong>Profile name:</strong>
             <?= data.user.profile.name ?>
           </li>
-          <li><strong>Username:</strong> @
-            <?= data.user.auth.local.username ?>
+          <li><strong>Username:</strong>
+            @<?= data.user.auth.local.username ?>
           </li>
           <li><strong>Party:</strong>
             <?= data.party.name ?>
@@ -101,6 +73,15 @@
               <?= data.currentQuest.participation ?>%
             </li>
           </ul>
+          <div>
+            <? if ("start" in data.currentQuest.links) { ?>
+              <button class="button" onclick="startQuest('<?= data.party.id ?>')">
+                Start this quest
+              </button>
+            <? } else { ?>
+              <i>no actions available</i>
+            <? } ?>
+          </div>
         <? } else { ?>
           <i>No active quest</i>
         <? } ?>
@@ -108,74 +89,109 @@
     </div>
     <!-- LIST OF USER'S QUESTS -->
     <div class="section">
-      <h2>Quests of
-        <?= data.user.profile.name ?>
-      </h2>
+      <h2>Quests of <?= data.user.profile.name ?></h2>
+
       <div class="section-content">
         <div class="quest-list-container">
           <? for(let i = 0; i < data.quests.length; i++) { ?>
-          <div class="quest-card">
-            <!-- Base information -->
-            <h3 class="quest-card-title">
-              <?= data.quests[i].text ?> (<?= data.quests[i].count ?>)
-              <!-- Quest status if it's the currently active quest -->
-              <? if (data.quests[i].key === data.currentQuest?.key) { ?>
-                <i>
-                  - <?= data.currentQuest?.status ?>
-                </i>
-              <? } ?>
-            </h3>
-
-            <div class="quest-card-content" id="quest-card-content-<?= i ?>">
-              <ul>
-                <li>
-                  <strong>Count:</strong>
-                  <?= data.quests[i].count ?>
-                </li>
-                <li>
-                  <strong>Drops:</strong>
-                  <ul>
-                    <li>
-                      <strong>Gold:</strong>
-                      <?= data.quests[i].drop.gp ?>
-                    </li>
-                    <li>
-                      <strong>Exp:</strong>
-                      <?= data.quests[i].drop.exp ?>
-                    </li>
-                    <li>
-                      <strong>Items:</strong>
-                      <ul>
-                        <? for(let j = 0; j < data.quests[i].drop.items.length; j++) { ?>
-                          <li><?= data.quests[i].drop.items[j].text ?></li>
-                        <? } ?>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-              
-              <!-- Possible action -->
-              <div>
-                <? if ("invite" in data.quests[i].links) { ?>
-                <a class="button" href="<?= data.quests[i].links['invite'] ?>">
-                  Send invitations
-                </a>
-                <? } else if ("start" in data.quests[i].links) { ?>
-                <a class="button" href="<?= data.quests[i].links['start'] ?>">
-                  Start this quest
-                </a>
-                <? } else { ?>
-                  <i>no actions available</i>
+            <div class="quest-card">
+              <!-- Base information -->
+              <h3 class="quest-card-title">
+                <?= data.quests[i].text ?> (<?= data.quests[i].count ?>)
+                <!-- Quest status if it's the currently active quest -->
+                <? if (data.quests[i].key === data.currentQuest?.key) { ?>
+                  <i>- <?= data.currentQuest?.status ?></i>
                 <? } ?>
+              </h3>
+
+              <div class="quest-card-content" id="quest-card-content-<?= i ?>">
+                <ul>
+                  <li>
+                    <strong>Count:</strong>
+                    <?= data.quests[i].count ?>
+                  </li>
+                  <li>
+                    <strong>Drops:</strong>
+                    <ul>
+                      <li>
+                        <strong>Gold:</strong>
+                        <?= data.quests[i].drop.gp ?>
+                      </li>
+                      <li>
+                        <strong>Exp:</strong>
+                        <?= data.quests[i].drop.exp ?>
+                      </li>
+                      <li>
+                        <strong>Items:</strong>
+                        <ul>
+                          <? for(let j = 0; j < data.quests[i].drop.items.length; j++) { ?>
+                            <li><?= data.quests[i].drop.items[j].text ?></li>
+                          <? } ?>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+                
+                <!-- Possible action -->
+                <div>
+                  <? if ("invite" in data.quests[i].links) { ?>
+                    <button class="button" onclick="sendInvitations('<?= data.quests[i].key ?>')">
+                      Send invitations
+                    </button>
+                  <? } else if ("start" in data.quests[i].links) { ?>
+                    <button class="button" onclick="startQuest('<?= data.party.id ?>')">
+                      Start this quest
+                    </button>
+                  <? } else { ?>
+                    <i>no actions available</i>
+                  <? } ?>
+                </div>
               </div>
             </div>
-          </div>
           <? } ?>
         </div>
       </div>
     </div>
-  </main>
-</body>
+  <? } else { ?>
+    <?!= include('pages/components/loadingIcon') ?>
+  <? } ?>
+</main>
 
-</html>
+<script type="module">
+  (() => {
+    window.startQuest = (partyId) => {
+      google.script.run.withSuccessHandler(() => {
+        reloadTheData();
+      }).forceStartQuest(partyId);
+    }
+
+    window.sendInvitations = (questKey) => {
+      google.script.run.withSuccessHandler(() => {
+        reloadTheData();
+      }).inviteMembersToQuest(questKey);
+    }
+
+    window.fetchData = async () => {
+      const dataPromise = new Promise((resolve, reject) => {
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).getMainPageData();
+      });
+    }
+
+    reloadTheData();
+
+    const questCards = document.getElementsByClassName('quest-card');
+
+    for (let i = 0; i < questCards.length; i++) {
+      questCards[i].addEventListener('click', () => {
+        const questCardContent = document.getElementById(`quest-card-content-${i}`);
+
+        if (questCardContent.style.maxHeight) {
+          questCardContent.style.maxHeight = null;
+        } else {
+          questCardContent.style.maxHeight = questCardContent.scrollHeight + "px";
+        }
+      });
+    }
+  })()
+</script>

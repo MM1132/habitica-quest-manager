@@ -1,5 +1,5 @@
-import { getGlobalPageData } from '../pages/globalPageData';
 import { getAuthenticated } from '../services/properties/authPropertyService';
+import { getGlobalPageData } from '../services/properties/globalPageData';
 
 export const backToMainPage = (message: string) => {
   const { mainPageUrl } = getGlobalPageData();

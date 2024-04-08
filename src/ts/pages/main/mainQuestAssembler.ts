@@ -6,6 +6,15 @@ import { LocalQuest } from '../../services/local/quests/types';
 import { getQuestStartThreshold } from '../../services/properties/settingsPropertyService';
 import { QuestStatus } from './questTypes';
 
+export interface CurrentQuestLinks {
+  start?: boolean;
+}
+
+export interface QuestLinks {
+  invite?: boolean;
+  start?: boolean;
+}
+
 export interface CustomQuestData {
   key: string;
   count: number;
@@ -18,11 +27,7 @@ export interface CurrentQuest extends LocalQuest {
   leaderId: string;
   memberCount: number;
   participation: number;
-}
-
-export interface QuestLinks {
-  invite?: string;
-  start?: string;
+  links: CurrentQuestLinks;
 }
 
 export interface QuestWithLinks extends LocalQuest, CustomQuestData {
@@ -40,7 +45,8 @@ const getQuestStatus = (partyQuest: PartyQuest): QuestStatus | null => {
 };
 
 export const assembleCurrentQuest = (
-  partyData: ApiParty
+  partyData: ApiParty,
+  userId: string
 ): CurrentQuest | null => {
   const status = getQuestStatus(partyData.quest);
   if (!status) {
@@ -49,8 +55,7 @@ export const assembleCurrentQuest = (
 
   const localQuestData = getLocalQuestByKey(partyData.quest.key!);
 
-  const ownerProfileName = getUserDataById(partyData.quest.leader!).profile
-    .name;
+  const questLeader = getUserDataById(partyData.quest.leader!);
 
   const memberCount = Object.values(partyData.quest.members).filter(
     (v) => !!v
@@ -58,13 +63,22 @@ export const assembleCurrentQuest = (
 
   const participation = Math.floor((100 / partyData.memberCount) * memberCount);
 
+  const currentQuestLinks: CurrentQuestLinks = {
+    ...(status === QuestStatus.INVITATIONS_SENT &&
+      participation >= getQuestStartThreshold() &&
+      (userId === questLeader.id || userId === partyData.leader.id) && {
+        start: true,
+      }),
+  };
+
   return {
     key: partyData.quest.key!,
     status,
-    leaderProfileName: ownerProfileName,
+    leaderProfileName: questLeader.profile.name,
     leaderId: partyData.quest.leader!,
     memberCount,
     participation,
+    links: currentQuestLinks,
     ...localQuestData,
   };
 };
@@ -78,7 +92,7 @@ export const assembleQuestWithLinks = (
   user: ApiUser,
   party: ApiParty
 ): AssembledQuests => {
-  const currentQuest = assembleCurrentQuest(party);
+  const currentQuest = assembleCurrentQuest(party, user.id);
 
   const questsWithLinks: QuestWithLinks[] = Object.entries(user.items.quests)
     .filter(([_, questCount]) => questCount > 0)
@@ -92,13 +106,13 @@ export const assembleQuestWithLinks = (
 
       const links: QuestLinks = {
         ...(!currentQuest && {
-          invite: `${ScriptApp.getService().getUrl()}/invite?questKey=${questKey}&groupId=${party.id}`,
+          invite: true,
         }),
         ...(currentQuest?.status === QuestStatus.INVITATIONS_SENT &&
           currentQuest.participation >= getQuestStartThreshold() &&
           user.id === currentQuest.leaderId &&
           currentQuest.key === questKey && {
-            start: `${ScriptApp.getService().getUrl()}/start?groupId=${party.id}`,
+            start: true,
           }),
       };
 

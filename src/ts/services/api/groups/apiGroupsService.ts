@@ -18,7 +18,7 @@ export const getPartyMembers = (groupId: string) => {
 };
 
 export const inviteMembersToQuest = (groupId: string, questKey: string) => {
-  return doApiRequest(
+  return doApiRequest<any>(
     `https://habitica.com/api/v4/groups/${groupId}/quests/invite/${questKey}`,
     {
       method: HttpMethod.POST,
@@ -27,7 +27,7 @@ export const inviteMembersToQuest = (groupId: string, questKey: string) => {
 };
 
 export const forceStartQuest = (qroupId: string) => {
-  return doApiRequest(
+  return doApiRequest<any>(
     `https://habitica.com/api/v4/groups/${qroupId}/quests/force-start`,
     {
       method: HttpMethod.POST,

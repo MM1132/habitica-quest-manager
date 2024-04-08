@@ -12,7 +12,14 @@ export class Router {
   getRoutes: Record<string, GET_HANDLER> = {};
   postRoutes: Record<string, POST_HANDLER> = {};
 
-  constructor() {}
+  private static getErrorResponse = (message?: string) => {
+    return ContentService.createTextOutput(
+      JSON.stringify({
+        success: false,
+        message: message || 'Not found',
+      } as ApiError)
+    ).setMimeType(ContentService.MimeType.JSON);
+  };
 
   public get(path: string, handler: GET_HANDLER) {
     this.getRoutes[path] = handler;
@@ -29,15 +36,6 @@ export class Router {
     const route = this.getRoutes[pathInfo];
 
     if (!route) {
-      if (pathInfo.startsWith('api/v1')) {
-        return ContentService.createTextOutput(
-          JSON.stringify({
-            success: false,
-            message: 'Not found',
-          } as ApiError)
-        ).setMimeType(ContentService.MimeType.JSON);
-      }
-
       return backToMainPage(`Invalid path: '${pathInfo}'`);
     }
 
@@ -48,15 +46,21 @@ export class Router {
     let { pathInfo } = e;
     pathInfo = pathInfo || '';
 
-    const route = this.postRoutes[pathInfo];
+    if (pathInfo !== '') {
+      return Router.getErrorResponse(
+        `Only / paths are allowed for the POST request, your path was '${pathInfo}'`
+      );
+    }
+
+    const contents = JSON.parse(e.postData.contents);
+
+    // `path` is the reserved keyword in the contents of the POST request
+    const route = this.postRoutes[contents.path || ''];
 
     if (!route) {
-      return ContentService.createTextOutput(
-        JSON.stringify({
-          success: false,
-          message: 'Not found',
-        } as ApiError)
-      ).setMimeType(ContentService.MimeType.JSON);
+      return Router.getErrorResponse(
+        "The path in the 'path' key was not found"
+      );
     }
 
     return route(e);

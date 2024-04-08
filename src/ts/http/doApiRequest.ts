@@ -44,10 +44,6 @@ export const doApiRequest = <RETURN_TYPE>(
   const parsedJson = JSON.parse(response.getContentText());
 
   if (parsedJson.success === false) {
-    PropertiesService.getScriptProperties().setProperty(
-      'authenticated',
-      'false'
-    );
     throw parsedJson as ApiError;
   }
 

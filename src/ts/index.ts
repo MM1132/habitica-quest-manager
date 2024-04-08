@@ -1,24 +1,20 @@
 import {
-  getInviteHandler,
-  getMainHandler,
-  getPartyQuestsHandler,
-  getSettingsHandler,
-  getStartHandler,
-  getTestHandler,
-} from './endpoints/endpointHandlers';
+  apiInviteMembersToQuest,
+  apiServeUserData,
+  apiStartQuest,
+} from './endpoints/apiEndpointHandlers';
+import { layoutPageHandler } from './endpoints/endpointHandlers';
 import { Router } from './endpoints/router';
 
 const router = new Router();
 
 // Pages
-router.get('', getMainHandler);
-router.get('settings', getSettingsHandler);
-router.get('test', getTestHandler);
-router.get('party-quests', getPartyQuestsHandler);
+router.get('', layoutPageHandler);
 
-// Actions
-router.get('start', getStartHandler);
-router.get('invite', getInviteHandler);
+// API
+router.post('api/v1/user', apiServeUserData);
+router.post('api/v1/start', apiStartQuest);
+router.post('api/v1/invite', apiInviteMembersToQuest);
 
 export function doGet(e: GoogleAppsScript.Events.DoGet) {
   return router.handleGet(e);
