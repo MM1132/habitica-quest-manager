@@ -7,13 +7,19 @@ This is a **Google Apps Script** integrating with [Habitica](https://habitica.co
 - *Scroll down to the [Installation](#installation) section for setup instructions.*
 - *If you want to contrubute to the project, head over to the [For Developers](#for-developers) section.*
 
-## Features
-- **Send invitations and start quests**
-- **View current quest information**
+## Current features (v1.3)
+- **Secure setup Page and authentication**
 - **View the user's quest inventory**
-- **Secure authentication**
-- **Settings page for extra tweaks**
+- **Send invitations and start quests**
+- **See the current quest in progress**
+- **View information about every quest**
+- **Settings Page for extra tweaks**
 - **Extra actions for Party Leaders**
+- **Party Quests (proof of concept): list all quests owned by your party**
+
+## Upcoming in next release (v1.4)
+- **Members Page:** where you can connect other party memebrs' Quest Managers to your own, and therefore manage your entire party's quest inventory just from one page. 
+- **Loading Screen:** for whenever a page is still loading, to demonstrate how slow Habitica's servers really are. 
 
 ## Preview Images (v1.0)
 
