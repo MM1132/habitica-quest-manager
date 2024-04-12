@@ -1,0 +1,15 @@
+<div class="section">
+  <h2>All quests of your Party</h2>
+  <div class="section-content">
+    <ol>
+      <? for(let i = 0; i < props.quests.length; i++) { ?>
+        <li>
+          <strong>
+            <?= props.quests[i].name ?>
+          </strong> (
+          <?= props.quests[i].count ?>)
+        </li>
+      <? } ?>
+    </ol>
+  </div>
+</div>

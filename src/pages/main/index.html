@@ -1,0 +1,105 @@
+<main id="main"></main>
+
+<script type="module">
+  (() => {
+    const setSectionsContent = async (data) => {
+      const mainElement = document.getElementById('main');
+
+      if (!data) {
+        mainElement.innerHTML = <?= include('pages/components/loading') ?>;
+        return;
+      }
+      
+      const profileSection = await asyncInclude(
+        "pages/main/profileSection", {
+          profileName: data.user.profile.name, 
+          username: data.user.auth.local.username, 
+          party: data.party.name,
+        }
+      );
+
+      const settingSection = await asyncInclude(
+        "pages/main/settingsSection", {
+          questStartThreshold: data.settings.questStartThreshold,
+        }
+      );
+
+      const currentQuestSection = await asyncInclude(
+        "pages/main/currentQuestSection", {
+          currentQuest: data.currentQuest,
+          party: data.party,
+        }
+      );
+
+      const questsSection = await asyncInclude(
+        "pages/main/questsSection", {
+          profileName: data.user.profile.name,
+          quests: data.quests,
+          currentQuest: data.currentQuest,
+          party: data.party,
+        }
+      );
+
+      mainElement.innerHTML = `
+        ${profileSection}
+        ${settingSection}
+        ${currentQuestSection}
+        ${questsSection}
+      `;
+
+      loadScriptsForElement(mainElement);
+    }
+
+    /* GLOBALS */
+    window.reloadPage = async () => {
+      await setSectionsContent();
+
+      const dataPromise = new Promise((resolve, reject) => {
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).getMainPageData();
+      });
+
+      try {
+        const data = await dataPromise;
+        setSectionsContent(data);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    }
+
+    const loadingIcon = document.createElement('div');
+    loadingIcon.innerHTML = <?= include('pages/components/loadingIcon') ?>;
+
+    window.forceStartQuest = (partyId, buttonId) => {
+      const startButton = document.getElementById(buttonId);
+      startButton.style.pointerEvents = 'none';
+      startButton.appendChild(loadingIcon);
+
+      google.script.run.withSuccessHandler((response) => {
+        reloadPage();
+      }).withFailureHandler(() => {
+        loadingIcon.remove();
+        startButton.style.pointerEvents = 'auto';
+        alert('Force-starting the quest failed. Please contact the developer (Kanguste) about this <3');
+      }).forceStartQuest(partyId);
+    }
+
+    window.inviteMembersToQuest = (groupId, questKey, buttonId) => {
+      const inviteButton = document.getElementById(buttonId);
+      inviteButton.style.pointerEvents = 'none';
+      inviteButton.appendChild(loadingIcon);
+
+      google.script.run.withSuccessHandler((response) => {
+        reloadPage();
+      }).withFailureHandler(() => {
+        loadingIcon.remove();
+        inviteButton.style.pointerEvents = 'auto';
+        alert('Inviting members to the quest failed. Please contact the developer (Kanguste) about this <3');
+      }).inviteMembersToQuest(groupId, questKey);
+    }
+
+    /* INIT */
+    reloadPage();
+
+    /* ####### */
+  })()
+</script>
