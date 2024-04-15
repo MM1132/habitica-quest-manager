@@ -9,39 +9,32 @@
         mainElement.innerHTML = <?= include('pages/components/loading') ?>;
         return;
       }
-      
-      const profileSection = await asyncInclude(
-        "pages/main/profileSection", data.profileSection
-      );
 
-      const settingsSection = await asyncInclude(
-        "pages/main/settingsSection", data.settingsSection
-      );
-
-      const currentQuestSection = await asyncInclude(
-        "pages/main/currentQuestSection", data.currentQuestSection
+      const membersSection = await asyncInclude(
+        "pages/members/membersSection", {
+          members: data.members,
+        }
       );
 
       const questsSection = await asyncInclude(
-        "pages/main/questsSection", data.questsSection
+        "pages/members/questsSection", {
+          quests: data.quests,
+        }
       );
 
       mainElement.innerHTML = `
-        ${profileSection}
-        ${settingsSection}
-        ${currentQuestSection}
+        ${membersSection}
         ${questsSection}
       `;
 
       loadScriptsForElement(mainElement);
     }
 
-    /* GLOBALS */
-    const loadPage = async () => {
+    window.reloadPage = async () => {
       await setSectionsContent();
 
       const dataPromise = new Promise((resolve, reject) => {
-        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).page_getMainData();
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).getMembersPageData();
       });
 
       try {
@@ -52,9 +45,6 @@
       }
     }
 
-    /* INIT */
-    loadPage();
-
-    /* ####### */
+    reloadPage();
   })()
 </script>

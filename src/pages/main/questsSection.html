@@ -9,8 +9,8 @@
           <h3 class="quest-card-title">
             <?= props.quests[i].text ?> (<?= props.quests[i].count ?>)
             <!-- Quest status if it's the currently active quest -->
-            <? if (props.quests[i].key === props.currentQuest?.key) { ?>
-              <i>- <?= props.currentQuest?.status ?></i>
+            <? if (props.quests[i].key === props.currentQuestKey) { ?>
+              <i>- <?= props.currentQuestStatus ?></i>
             <? } ?>
           </h3>
 
@@ -45,22 +45,26 @@
             
             <!-- Possible action -->
             <div>
-              <? if ("invite" in props.quests[i].links) { ?>
+              <? if ("api/v1/invite" in props.quests[i]._links) { ?>
                 <button
                   class="button"
                   id="invite-members-button-<?= props.quests[i].key ?>"
                   onclick="inviteMembersToQuest(
-                    '<?= props.party.id ?>',
+                    '<?= props.quests[i]._links[`api/v1/invite`] ?>',
                     '<?= props.quests[i].key ?>',
-                    'invite-members-button-<?= props.quests[i].key ?>')"
+                    'invite-members-button-<?= props.quests[i].key ?>'
+                  )"
                 >
                   Send invitations
                 </button>
-              <? } else if ("start" in props.quests[i].links) { ?>
+              <? } else if ("api/v1/start" in props.quests[i]._links) { ?>
                 <button
                   class="button"
-                  id="start-quest-button-<?= props.party.id ?>"
-                  onclick="forceStartQuest('<?= props.party.id ?>', 'start-quest-button-<?= props.party.id ?>')"
+                  id="start-quest-button-<?= props.quests[i].key ?>"
+                  onclick="forceStartQuest(
+                    '<?= props.quests[i]._links[`api/v1/start`] ?>',
+                    'start-quest-button-<?= props.quests[i].key ?>'
+                  )"
                 >
                   Start this quest
                 </button>

@@ -1,0 +1,63 @@
+<div class="section">
+  <h2>Quests of members</h2>
+
+  <div class="section-content">
+    <div class="quest-list-container">
+      <? for(let i = 0; i < props.quests.length; i++) { ?>
+        <div class="quest-card">
+          <h3 class="quest-card-title">
+            <?= props.quests[i].localQuest.text ?> (<?= props.quests[i].count ?>)
+          </h3>
+
+          <div class="quest-card-content" id="quest-card-content-<?= i ?>">
+            <ul>
+              <li>
+                <strong>Count:</strong>
+                <?= props.quests[i].count ?>
+              </li>
+              <li>
+                <strong>Drops:</strong>
+                <ul>
+                  <li>
+                    <strong>Gold:</strong>
+                    <?= props.quests[i].localQuest.drop.gp ?>
+                  </li>
+                  <li>
+                    <strong>Exp:</strong>
+                    <?= props.quests[i].localQuest.drop.exp ?>
+                  </li>
+                  <li>
+                    <strong>Items:</strong>
+                    <ul>
+                      <? for(let j = 0; j < props.quests[i].localQuest.drop.items.length; j++) { ?>
+                        <li><?= props.quests[i].localQuest.drop.items[j].text ?></li>
+                      <? } ?>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      <? } ?>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const questCards = document.getElementsByClassName('quest-card');
+
+    for (let i = 0; i < questCards.length; i++) {
+      questCards[i].addEventListener('click', () => {
+        const questCardContent = document.getElementById(`quest-card-content-${i}`);
+
+        if (questCardContent.style.maxHeight) {
+          questCardContent.style.maxHeight = null;
+        } else {
+          questCardContent.style.maxHeight = questCardContent.scrollHeight + "px";
+        }
+      });
+    }
+  })()
+</script>

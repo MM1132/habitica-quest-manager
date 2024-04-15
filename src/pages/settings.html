@@ -38,7 +38,7 @@
         questStartThreshold.value = '';
       }).withFailureHandler((error) => {
         document.getElementById('loading-bar').innerHTML = error.message;
-      }).updateSettings(password, questStartThreshold);
+      }).props_updateSettings(password, questStartThreshold);
     }
   })()
 </script>

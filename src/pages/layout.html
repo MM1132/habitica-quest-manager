@@ -1,4 +1,4 @@
-<? const globalData = getGlobalPageData(); ?>
+<? const constantData = props_getConstantData(); ?>
 
 <html>
   <head>
@@ -10,9 +10,9 @@
     <div class="header">
       <div class="header-title">
         <h4>
-          <?= globalData.scriptName ?> 
+          <?= constantData.scriptName ?> 
           <u>
-            <?= globalData.scriptVersion ?>
+            <?= constantData.scriptVersion ?>
           </u>
         </h4>
         <i>by <a class="link" href="https://habitica.com/profile/90c987f2-cf51-442f-b932-3c4194d56ad6">Kanguste</a></i>
@@ -59,12 +59,47 @@
         });
       }
 
+      window.reloadPage = () => navigate(currentPage);
+
+      const loadingIcon = document.createElement('div');
+      loadingIcon.innerHTML = <?= include('pages/components/loadingIcon') ?>;
+
+      window.forceStartQuest = (userLink, buttonId) => {
+        const startButton = document.getElementById(buttonId);
+        startButton.style.pointerEvents = 'none';
+        startButton.appendChild(loadingIcon);
+
+        google.script.run.withSuccessHandler((response) => {
+          reloadPage();
+        }).withFailureHandler(() => {
+          loadingIcon.remove();
+          startButton.style.pointerEvents = 'auto';
+          alert('Force-starting the quest failed. Please contact the developer (Kanguste) about this <3');
+        }).page_forceStartQuest(userLink);
+      }
+
+      window.inviteMembersToQuest = (userLink, questKey, buttonId) => {
+        const inviteButton = document.getElementById(buttonId);
+        inviteButton.style.pointerEvents = 'none';
+        inviteButton.appendChild(loadingIcon);
+
+        google.script.run.withSuccessHandler((response) => {
+          reloadPage();
+        }).withFailureHandler(() => {
+          loadingIcon.remove();
+          inviteButton.style.pointerEvents = 'auto';
+          alert('Inviting members to the quest failed. Please contact the developer (Kanguste) about this <3');
+        }).page_inviteMembersToQuest(link, questKey);
+      }
+
       /* ####### */
+
+      let currentPage = 'main';
 
       const preloadedPages = {
         main: <?= include('pages/main/index') ?>,
         settings: <?= include('pages/settings') ?>,
-        members: <?= include('pages/members') ?>,
+        members: <?= include('pages/members/index') ?>,
         partyQuests: <?= include('pages/partyQuests/index') ?>,
       };
 
@@ -80,6 +115,8 @@
           loadScriptsForElement(content);
 
           enableNavigationButtons();
+
+          currentPage = page;
         } catch (error) {
           enableNavigationButtons();
           content.innerHTML = `<h1>Failed to load page</h1><br>${error.message}`;

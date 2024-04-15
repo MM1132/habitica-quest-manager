@@ -2,26 +2,26 @@
   <h2>Current Quest Info</h2>
   
   <div class="section-content">
-    <? if (props.currentQuest) { ?>
+    <? if (props) { ?>
       <ul>
         <li><strong>Quest name:</strong>
-          <?= props.currentQuest.text ?>
+          <?= props.text ?>
         </li>
         <li>
           <strong>Drops:</strong>
           <ul>
             <li><strong>Gold:</strong>
-              <?= props.currentQuest.drop.gp ?>
+              <?= props.drop.gp ?>
             </li>
             <li><strong>Exp:</strong>
-              <?= props.currentQuest.drop.exp ?>
+              <?= props.drop.exp ?>
             </li>
             <li>
               <strong>Items:</strong>
               <ul>
-                <? for(let i = 0; i < props.currentQuest.drop.items.length; i++) { ?>
+                <? for(let i = 0; i < props.drop.items.length; i++) { ?>
                 <li>
-                  <?= props.currentQuest.drop.items[i].text ?>
+                  <?= props.drop.items[i].text ?>
                 </li>
                 <? } ?>
               </ul>
@@ -29,25 +29,25 @@
           </ul>
         </li>
         <li><strong>Quest leader:</strong>
-          <?= props.currentQuest.leaderProfileName ?>
+          <?= props.leaderProfileName ?>
         </li>
         <li><strong>Status:</strong>
-          <?= props.currentQuest.status ?>
+          <?= props.status ?>
         </li>
         <li><strong>Participating members:</strong>
-          <?= props.currentQuest.memberCount ?> /
-          <?= props.party.memberCount ?>
+          <?= props.participantCount ?> /
+          <?= props.partyMemberCount ?>
         </li>
         <li><strong>Participation percentage:</strong>
-          <?= props.currentQuest.participation ?>%
+          <?= props.participationPercentage ?>%
         </li>
       </ul>
       <div>
-        <? if ("start" in props.currentQuest.links) { ?>
+        <? if ("api/v1/start" in props._links) { ?>
           <button
             class="button"
             id="current-quest-start-button"
-            onclick="forceStartQuest('<?= props.party.id ?>', 'current-quest-start-button')"
+            onclick="forceStartQuest('<?= props._links[`api/v1/start`] ?>', 'current-quest-start-button')"
           >
             Start this quest
           </button>
