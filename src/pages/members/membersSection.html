@@ -4,7 +4,7 @@
   <div class="section-content">
     <ul>
       <? for (let i = 0; i < props.members.length; i++) { ?>
-        <li><?= props.members[i].name ?> <strong>(<?= props.members[i].scriptVersion ?>)</strong></li>
+        <li><?= props.members[i].profileName ?> <strong>(<?= props.members[i].scriptVersion ?>)</strong></li>
       <? } ?>
     </ul>
 
@@ -58,11 +58,11 @@
         password.value = '';
         memberLink.value = '';
 
-        reloadPage();
+        ();
       }).withFailureHandler((error) => {
         document.getElementById('loading-bar').innerHTML = error.message;
         submitButton.style.pointerEvents = 'auto';
-      }).addNewMember(password, memberLink);
+      }).props_addNewMember(password, memberLink);
     }
 
     window.addEventListener('click', (event) => {

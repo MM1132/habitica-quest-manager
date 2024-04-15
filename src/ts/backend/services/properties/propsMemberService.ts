@@ -1,13 +1,11 @@
 import { aqm_getUserByLink } from '../aqm/aqmUserService';
 import { getUserId } from './propsSetupService';
 
-export interface LocalMember {
+export interface PropertyMember {
   id: string;
   name: string;
   link: string;
 }
-
-export type MembersProperty = LocalMember[];
 
 export const props_addNewMember = (password: string, link: string) => {
   const savedPassword =
@@ -20,7 +18,7 @@ export const props_addNewMember = (password: string, link: string) => {
   const membersProperty =
     PropertiesService.getScriptProperties().getProperty('members');
 
-  const members: MembersProperty = membersProperty
+  const members: PropertyMember[] = membersProperty
     ? JSON.parse(membersProperty)
     : [];
 
@@ -57,11 +55,11 @@ export const props_addNewMember = (password: string, link: string) => {
   }
 };
 
-export const getAllMembers = () => {
+export const props_getAllMembers = () => {
   const membersProperty =
     PropertiesService.getScriptProperties().getProperty('members');
 
-  const members: MembersProperty = membersProperty
+  const members: PropertyMember[] = membersProperty
     ? JSON.parse(membersProperty)
     : [];
 

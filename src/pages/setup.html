@@ -17,7 +17,7 @@
           document.getElementById('loading-bar').innerHTML = 'Setup done. Now refresh the page :)';
         }).withFailureHandler((error) => {
           document.getElementById('loading-bar').innerHTML = error.message;
-        }).setSetupData(password, userId, apiToken);
+        }).props_setSetupData(password, userId, apiToken);
       }
     </script>
     

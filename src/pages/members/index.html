@@ -11,20 +11,17 @@
       }
 
       const membersSection = await asyncInclude(
-        "pages/members/membersSection", {
-          members: data.members,
-        }
+        "pages/members/membersSection", data.membersSection
       );
 
-      const questsSection = await asyncInclude(
+      /* const questsSection = await asyncInclude(
         "pages/members/questsSection", {
           quests: data.quests,
         }
-      );
+      ); */
 
       mainElement.innerHTML = `
         ${membersSection}
-        ${questsSection}
       `;
 
       loadScriptsForElement(mainElement);
@@ -34,7 +31,7 @@
       await setSectionsContent();
 
       const dataPromise = new Promise((resolve, reject) => {
-        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).getMembersPageData();
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).page_getMembersData();
       });
 
       try {
