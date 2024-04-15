@@ -84,7 +84,11 @@
     const questCards = document.getElementsByClassName('quest-card');
 
     for (let i = 0; i < questCards.length; i++) {
-      questCards[i].addEventListener('click', () => {
+      questCards[i].addEventListener('click', (e) => {
+        if (e.srcElement.classList.contains('button')) {
+          return;
+        }
+
         const questCardContent = document.getElementById(`quest-card-content-${i}`);
 
         if (questCardContent.style.maxHeight) {

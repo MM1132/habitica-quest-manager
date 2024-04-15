@@ -22,7 +22,6 @@
           <li><button class="button" onclick="navigate('main')">Main</button></li>
           <li><button class="button" onclick="navigate('settings')">Settings</button></li>
           <li><button class="button" onclick="navigate('members')">Members <i>(WIP)</i></button></li>
-          <li><button class="button" onclick="navigate('partyQuests')">Party Quests <i>(WIP)</i></button></li>
         </ul>
       </nav>
     </div>
@@ -61,35 +60,36 @@
 
       window.reloadPage = () => navigate(currentPage);
 
-      const loadingIcon = document.createElement('div');
-      loadingIcon.innerHTML = <?= include('pages/components/loadingIcon') ?>;
-
       window.forceStartQuest = (userLink, buttonId) => {
         const startButton = document.getElementById(buttonId);
+        const initialTextContent = startButton.textContent;
+
         startButton.style.pointerEvents = 'none';
-        startButton.appendChild(loadingIcon);
+        startButton.textContent = "Starting... Wait!";
 
         google.script.run.withSuccessHandler((response) => {
           reloadPage();
         }).withFailureHandler(() => {
-          loadingIcon.remove();
           startButton.style.pointerEvents = 'auto';
+          startButton.textContent = initialTextContent;
           alert('Force-starting the quest failed. Please contact the developer (Kanguste) about this <3');
         }).page_forceStartQuest(userLink);
       }
 
       window.inviteMembersToQuest = (userLink, questKey, buttonId) => {
         const inviteButton = document.getElementById(buttonId);
+        const initialTextContent = inviteButton.textContent;
+
         inviteButton.style.pointerEvents = 'none';
-        inviteButton.appendChild(loadingIcon);
+        inviteButton.textContent = "Inviting... Wait!";
 
         google.script.run.withSuccessHandler((response) => {
           reloadPage();
         }).withFailureHandler(() => {
-          loadingIcon.remove();
           inviteButton.style.pointerEvents = 'auto';
+          inviteButton.textContent = initialTextContent;
           alert('Inviting members to the quest failed. Please contact the developer (Kanguste) about this <3');
-        }).page_inviteMembersToQuest(link, questKey);
+        }).page_inviteMembersToQuest(userLink, questKey);
       }
 
       /* ####### */
@@ -100,7 +100,6 @@
         main: <?= include('pages/main/index') ?>,
         settings: <?= include('pages/settings') ?>,
         members: <?= include('pages/members/index') ?>,
-        partyQuests: <?= include('pages/partyQuests/index') ?>,
       };
 
       const navigate = (page) => {

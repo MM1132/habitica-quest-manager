@@ -58,7 +58,7 @@
         password.value = '';
         memberLink.value = '';
 
-        ();
+        reloadPage();
       }).withFailureHandler((error) => {
         document.getElementById('loading-bar').innerHTML = error.message;
         submitButton.style.pointerEvents = 'auto';
