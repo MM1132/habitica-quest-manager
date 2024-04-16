@@ -4,7 +4,19 @@
   <div class="section-content">
     <ul>
       <? for (let i = 0; i < props.members.length; i++) { ?>
-        <li><?= props.members[i].profileName ?> <strong>(<?= props.members[i].scriptVersion ?>)</strong></li>
+        <li>
+          <? if (props.members[i].success) { ?>
+            <div style="color: greenyellow; display: inline;">
+              <?!= include('pages/components/checkIcon') ?>
+            </div>
+            <?= props.members[i].profileName ?> 
+            <strong>(<?= props.members[i].scriptVersion ?>)</strong>
+            <u><?= props.members[i].questStartThreshold ?>%</u>
+          <? } else { ?>
+            <?= props.members[i].profileName ?>
+            <strong>(old link)</strong>
+          <? } ?>
+        </li>
       <? } ?>
     </ul>
 

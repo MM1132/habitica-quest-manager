@@ -1,4 +1,7 @@
-import { getAwesomeQuestManagerUserData } from '../../../backend/router/routes/apiUserEndpoint/apiServeUserData';
+import {
+  AQM_User,
+  getAwesomeQuestManagerUserData,
+} from '../../../backend/router/routes/apiUserEndpoint/apiServeUserData';
 import { aqm_getUserByLink } from '../../../backend/services/aqm/aqmUserService';
 import { props_getAllMembers } from '../../../backend/services/properties/propsMemberService';
 import {
@@ -16,14 +19,23 @@ export interface MembersPageData {
 }
 
 export const page_getMembersData = (): MembersPageData => {
-  const aqmUsers = props_getAllMembers().map(({ link }) => {
-    return aqm_getUserByLink(link);
+  const users = props_getAllMembers().map((memberProperty) => {
+    try {
+      return aqm_getUserByLink(memberProperty.link);
+    } catch {
+      return {
+        profileName: memberProperty.name,
+        success: false,
+      };
+    }
   });
 
-  const membersSection = assembleMembersPageMembersSection(aqmUsers);
+  const membersSection = assembleMembersPageMembersSection(users);
 
-  aqmUsers.push(getAwesomeQuestManagerUserData());
-  const questsSection = assembleMembersPageQuestSection(aqmUsers);
+  users.push(getAwesomeQuestManagerUserData());
+  const questsSection = assembleMembersPageQuestSection(
+    users.filter((user) => !('success' in user)) as AQM_User[]
+  );
 
   return {
     membersSection,
