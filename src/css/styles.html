@@ -15,6 +15,7 @@
     --color-text: rgb(255, 255, 255);
     --color-heading: #eb9800;
     --color-text-info: #ff2323;
+    --color-success: rgb(46, 228, 46);
   }
 
   * {
@@ -244,14 +245,20 @@
   /* } MODAL THINGS */
 
   /* MEMBERS PAGE { */
-  .add-member-form {
+  .member-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
 
-  .add-member-form .member-link {
+  .member-form .member-link {
     width: 100%;
+  }
+
+  .remove-member-modal-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
   }
 
   .form-label {
@@ -285,5 +292,55 @@
     flex-direction: column;
     gap: 10px;
   }
+
+  .icon-container {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    background-color: var(--color-light);
+    border: 1px solid var(--color-primary-dark);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+  }
+
+  .member-success-icon {
+    border-color: var(--color-success);
+    color: var(--color-success);
+  }
+  
+  .member-fail-icon {
+    border-color: var(--color-text-info);
+    color: var(--color-text-info);
+  }
+
+  .members-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--color-light);
+    box-shadow: 0 1px 3px 0 var(--color-dark-3), 0 1px 2px 0 var(--color-dark-3);
+  }
+
+  .remove-member-icon {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .remove-member-icon:hover > * {
+    color: var(--color-primary-light-2);
+  }
+
+  .remove-member-icon > * {
+    cursor: pointer;
+    color: var(--color-text-info);
+    width: 26px;
+    height: 26px;
+  }
+
 
 </style>

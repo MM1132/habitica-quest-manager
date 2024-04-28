@@ -28,16 +28,26 @@ export const assembleMainPageQuestSection = (
   constants: PROPS_ConstantData,
   settings: AQM_Settings
 ): MainPageQuestsSection => {
-  const quests = apiAssembleAQMQuests(user, party, constants, settings).map(
-    (quest) => {
+  const quests: (AQM_Quest & TranslatedQuest)[] = apiAssembleAQMQuests(
+    user,
+    party,
+    constants,
+    settings
+  )
+    .map((quest) => {
       const translatedQuest = translateQuestByKey(quest.key);
 
       return {
         ...quest,
         ...translatedQuest,
       };
-    }
-  );
+    })
+    .sort((questA, questB) => {
+      const questAValue = questA.drop.exp + questA.drop.gp;
+      const questBValue = questB.drop.exp + questB.drop.gp;
+
+      return questBValue - questAValue;
+    });
 
   const currentQuestStatus = apiAssembleCurrentQuestStatus(party.quest);
 

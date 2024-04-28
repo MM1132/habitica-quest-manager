@@ -4,23 +4,53 @@
   <div class="section-content">
     <ul>
       <? for (let i = 0; i < props.members.length; i++) { ?>
-        <li>
+        <li class="members-row">
           <? if (props.members[i].success) { ?>
-            <div style="color: greenyellow; display: inline;">
+            <div class="icon-container member-success-icon">
               <?!= include('pages/components/checkIcon') ?>
             </div>
+          <? } else { ?>
+            <div
+              class="icon-container member-fail-icon"
+            >
+              <?!= include('pages/components/alertIcon') ?>
+            </div>
+          <? } ?>
+
+          <div>
             <?= props.members[i].profileName ?> 
+          </div>
+
+          <? if (props.members[i].success) { ?>
             <strong>(<?= props.members[i].scriptVersion ?>)</strong>
             <u><?= props.members[i].questStartThreshold ?>%</u>
           <? } else { ?>
-            <?= props.members[i].profileName ?>
             <strong>(old link)</strong>
           <? } ?>
+
+          <div 
+            class="remove-member-icon"
+            onclick="openRemoveMemberModal('<?= props.members[i].id ?>', '<?= props.members[i].profileName ?>')"
+          >
+            <?!= include('pages/components/trashIcon') ?>
+          </div>
         </li>
       <? } ?>
     </ul>
 
     <button class="button" onclick="openModal();">Add member</button>
+  </div>
+</div>
+
+<div class="modal" id="remove-member-modal">
+  <div class="modal-content">
+    <div class="modal-title-bar">
+      <h2>Remove a member</h2>
+      <div class="close-modal" onclick="closeRemoveMemberModal();">
+        <?!= include('pages/components/closeIcon') ?>
+      </div>
+    </div>
+    <div id="remove-member-modal-content"></div>
   </div>
 </div>
 
@@ -33,7 +63,7 @@
       </div>
     </div>
 
-    <div class="add-member-form">
+    <div class="member-form">
       <label for="password" class="form-label">
         <h3>Password*</h3>
         <input class="text-field" type="password" id="password" placeholder="Your quest manager password*" required>
@@ -54,6 +84,8 @@
 
 <script>
   (() => {
+    const removeMemberModal = document.getElementById('remove-member-modal');
+
     window.submitMembersForm = () => {
       const loadingBar = document.getElementById('loading-bar');
       const submitButton = document.getElementById('submit-button');
@@ -65,11 +97,6 @@
       submitButton.style.pointerEvents = 'none';
 
       google.script.run.withSuccessHandler((members) => {
-        document.getElementById('loading-bar').innerHTML = 'Member added!';
-        submitButton.style.pointerEvents = 'auto';
-        password.value = '';
-        memberLink.value = '';
-
         reloadPage();
       }).withFailureHandler((error) => {
         document.getElementById('loading-bar').innerHTML = error.message;
@@ -81,6 +108,8 @@
       const modal = document.getElementById('add-member-modal');
       if (event.target === modal) {
         modal.style.display = 'none';
+      } else if (event.target === removeMemberModal) {
+        removeMemberModal.style.display = 'none';
       }
     });
 
@@ -90,6 +119,53 @@
 
     window.closeModal = () => {
       document.getElementById('add-member-modal').style.display = 'none';
+    }
+
+    // REMOVE
+    window.removeMember = (memberId) => {
+      const passwordField = document.getElementById('remove-password');
+      const removeLoadingBar = document.getElementById('remove-loading-bar');
+
+      removeLoadingBar.innerHTML = 'Loading...';
+
+      google.script.run.withSuccessHandler(() => {
+        reloadPage();
+      }).withFailureHandler((error) => {
+        passwordField.value = '';
+        
+        removeLoadingBar.innerHTML = error.message;
+      }).page_removeMember(passwordField.value, memberId);
+    }
+
+    window.openRemoveMemberModal = (id, profileName) => {
+      const content = document.getElementById('remove-member-modal-content');
+      content.innerHTML = `
+        <div class="member-form">
+          <div>
+            Are you sure you want to remove <strong>${profileName}</strong> from the members' list? 
+          </div>
+          <label for="password" class="form-label">
+            <h3>Password*</h3>
+            <input class="text-field" type="password" id="remove-password" placeholder="Your quest manager password (required)" required>
+          </label>
+          <div class="remove-member-modal-buttons">
+            <button
+              class="button"
+              onclick="removeMember('${id}');"
+            >
+              Yes, remove them!
+            </button>
+            <button class="button" onclick="closeRemoveMemberModal();">No</button>
+          </div>
+          <i id="remove-loading-bar"></i>
+        </div>
+        `;
+
+      removeMemberModal.style.display = 'block';
+    }
+
+    window.closeRemoveMemberModal = () => {
+      removeMemberModal.style.display = 'none';
     }
   })()
 </script>

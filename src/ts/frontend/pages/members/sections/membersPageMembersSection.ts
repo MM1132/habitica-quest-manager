@@ -5,6 +5,7 @@ export interface MembersPageMember {
   success: boolean;
   scriptVersion: string;
   questStartThreshold: number;
+  id: string;
 }
 
 export interface FailedUser {
@@ -33,6 +34,7 @@ export const assembleMembersPageMembersSection = (
         success: true,
         scriptVersion: aqmUser.aqmGlobalData.scriptVersion,
         questStartThreshold: aqmUser.aqmSettings.questStartThreshold,
+        id: aqmUser.habiticaUser.id,
       };
     }
   });

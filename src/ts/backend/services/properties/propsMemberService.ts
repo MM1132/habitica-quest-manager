@@ -55,6 +55,35 @@ export const props_addNewMember = (password: string, link: string) => {
   }
 };
 
+export const props_removeMember = (password: string, memberId: string) => {
+  const savedPassword =
+    PropertiesService.getScriptProperties().getProperty('password');
+
+  if (savedPassword !== password) {
+    throw new Error('Invalid password');
+  }
+
+  const membersProperty =
+    PropertiesService.getScriptProperties().getProperty('members');
+
+  const members: PropertyMember[] = membersProperty
+    ? JSON.parse(membersProperty)
+    : [];
+
+  const memberIndex = members.findIndex((member) => member.id === memberId);
+
+  if (memberIndex === -1) {
+    throw new Error('Member not found');
+  }
+
+  members.splice(memberIndex, 1);
+
+  PropertiesService.getScriptProperties().setProperty(
+    'members',
+    JSON.stringify(members)
+  );
+};
+
 export const props_getAllMembers = () => {
   const membersProperty =
     PropertiesService.getScriptProperties().getProperty('members');
