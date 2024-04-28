@@ -2,6 +2,23 @@
   <h2>Members List</h2>
 
   <div class="section-content">
+    <? if(props.members.length === 0) { ?>
+      <i>
+        Here you can link your party members' Quest Managers to your own. 
+        Adding a member will grant you possibility to start their quests from within your own Quest Manager.
+      </i>
+      <br><br>
+      <i>
+        The list of quests down below will show you the quests of all the members you have added, 
+        including the quests you have in your inventory. Since you are yet to add members to this 
+        "Members List", the list of quests down below shows only the quests owned by you. 
+      </i>
+      <br><br>
+      <i>
+        Press <strong>Add member</strong> to link your first party member to your Quest Manager :) 
+      </i>
+    <? } ?>
+
     <ul>
       <? for (let i = 0; i < props.members.length; i++) { ?>
         <li class="members-row">
@@ -123,15 +140,18 @@
 
     // REMOVE
     window.removeMember = (memberId) => {
+      const removeMemberButton = document.getElementById('remove-member-button');
       const passwordField = document.getElementById('remove-password');
       const removeLoadingBar = document.getElementById('remove-loading-bar');
 
+      removeMemberButton.style.pointerEvents = 'none';
       removeLoadingBar.innerHTML = 'Loading...';
 
       google.script.run.withSuccessHandler(() => {
         reloadPage();
       }).withFailureHandler((error) => {
         passwordField.value = '';
+        removeMemberButton.style.pointerEvents = 'auto';
         
         removeLoadingBar.innerHTML = error.message;
       }).page_removeMember(passwordField.value, memberId);
@@ -155,7 +175,7 @@
             >
               Yes, remove them!
             </button>
-            <button class="button" onclick="closeRemoveMemberModal();">No</button>
+            <button class="button" id="remove-member-button" onclick="closeRemoveMemberModal();">No</button>
           </div>
           <i id="remove-loading-bar"></i>
         </div>

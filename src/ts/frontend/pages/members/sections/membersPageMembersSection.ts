@@ -9,6 +9,7 @@ export interface MembersPageMember {
 }
 
 export interface FailedUser {
+  id: string;
   profileName: string;
   success: boolean;
 }
@@ -23,6 +24,7 @@ export const assembleMembersPageMembersSection = (
   const assembledMembers = members.map((member) => {
     if ('success' in member && member.success === false) {
       return {
+        id: member.id,
         profileName: member.profileName,
         success: member.success,
       };

@@ -24,6 +24,7 @@ export const page_getMembersData = (): MembersPageData => {
       return aqm_getUserByLink(memberProperty.link);
     } catch {
       return {
+        id: memberProperty.id,
         profileName: memberProperty.name,
         success: false,
       };
