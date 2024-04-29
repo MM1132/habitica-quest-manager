@@ -10,7 +10,11 @@ export const props_setSetupData = (
   PropertiesService.getScriptProperties().setProperty('apiToken', apiToken);
 
   try {
-    habitica_getUser();
+    const habiticaUser = habitica_getUser();
+    PropertiesService.getScriptProperties().setProperty(
+      'profileName',
+      habiticaUser.profile.name
+    );
   } catch (e: any) {
     throw new Error(e.message);
   }

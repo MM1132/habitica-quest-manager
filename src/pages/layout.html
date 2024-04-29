@@ -15,7 +15,7 @@
             <?= constantData.scriptVersion ?>
           </u>
         </h4>
-        <i>by <a class="link" href="https://habitica.com/profile/90c987f2-cf51-442f-b932-3c4194d56ad6">Kanguste</a></i>
+        <i>logged in as <a class="link" href="https://habitica.com/profile/<?= constantData.userId ?>"><?= constantData.profileName ?></a></i>
       </div>
       <nav>
         <ul class="navigation-buttons">
@@ -27,6 +27,22 @@
     </div>
 
     <div id="content"></div>
+
+    <footer>
+      <p>
+        <i>
+          <?= constantData.scriptName ?> 
+          <u>
+            <?= constantData.scriptVersion ?>
+          </u>
+        </i>
+        <br>
+        <i>Developed by <a class="link" href="https://habitica.com/profile/90c987f2-cf51-442f-b932-3c4194d56ad6">Kanguste</a></i>
+      </p>
+      <a class="footer-github-icon" href="https://github.com/MM1132/habitica-quest-manager">
+        <?!= include("pages/components/githubIcon") ?>
+      </a>
+    </footer>
     
     <script>
       /* INIT */

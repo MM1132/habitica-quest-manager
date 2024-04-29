@@ -33,6 +33,36 @@
   body {
     margin: 0;
     background-color: var(--color-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  footer { 
+    margin-top: auto;
+    color: var(--color-text);
+    background-color: var(--color-primary-dark);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  footer > p {
+    text-align: center;
+    flex: 1;
+  }
+
+  .footer-github-icon {
+    padding: 15px;
+  }
+
+  .footer-github-icon > * {
+    width: 30px;
+    height: 30px;
+  }
+
+  .footer-github-icon:hover > * {
+    color: var(--color-primary-light);
   }
 
   h1, h3 {
@@ -332,7 +362,7 @@
   }
 
   .remove-member-icon:hover > * {
-    color: var(--color-primary-light-2);
+    color: var(--color-primary-light);
   }
 
   .remove-member-icon > * {
