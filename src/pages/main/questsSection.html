@@ -1,0 +1,102 @@
+<div class="section">
+  <h2>Quests of <?= props.profileName ?></h2>
+
+  <div class="section-content">
+    <div class="quest-list-container">
+      <? for(let i = 0; i < props.quests.length; i++) { ?>
+        <div class="quest-card">
+          <!-- Base information -->
+          <h3 class="quest-card-title">
+            <?= props.quests[i].text ?> (<?= props.quests[i].count ?>)
+            <!-- Quest status if it's the currently active quest -->
+            <? if (props.quests[i].key === props.currentQuestKey) { ?>
+              <i>- <?= props.currentQuestStatus ?></i>
+            <? } ?>
+          </h3>
+
+          <div class="quest-card-content" id="quest-card-content-<?= i ?>">
+            <ul>
+              <li>
+                <strong>Count:</strong>
+                <?= props.quests[i].count ?>
+              </li>
+              <li>
+                <strong>Drops:</strong>
+                <ul>
+                  <li>
+                    <strong>Gold:</strong>
+                    <?= props.quests[i].drop.gp ?>
+                  </li>
+                  <li>
+                    <strong>Exp:</strong>
+                    <?= props.quests[i].drop.exp ?>
+                  </li>
+                  <li>
+                    <strong>Items:</strong>
+                    <ul>
+                      <? for(let j = 0; j < props.quests[i].drop.items.length; j++) { ?>
+                        <li><?= props.quests[i].drop.items[j].text ?></li>
+                      <? } ?>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            
+            <!-- Possible action -->
+            <div>
+              <? if ("api/v1/invite" in props.quests[i]._links) { ?>
+                <button
+                  class="button"
+                  id="invite-members-button-<?= props.quests[i].key ?>"
+                  onclick="inviteMembersToQuest(
+                    '<?= props.quests[i]._links[`api/v1/invite`] ?>',
+                    '<?= props.quests[i].key ?>',
+                    'invite-members-button-<?= props.quests[i].key ?>'
+                  )"
+                >
+                  Send invitations
+                </button>
+              <? } else if ("api/v1/start" in props.quests[i]._links) { ?>
+                <button
+                  class="button"
+                  id="start-quest-button-<?= props.quests[i].key ?>"
+                  onclick="forceStartQuest(
+                    '<?= props.quests[i]._links[`api/v1/start`] ?>',
+                    'start-quest-button-<?= props.quests[i].key ?>'
+                  )"
+                >
+                  Start this quest
+                </button>
+              <? } else { ?>
+                <i>no actions available</i>
+              <? } ?>
+            </div>
+          </div>
+        </div>
+      <? } ?>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const questCards = document.getElementsByClassName('quest-card');
+
+    for (let i = 0; i < questCards.length; i++) {
+      questCards[i].addEventListener('click', (e) => {
+        if (e.srcElement.classList.contains('button')) {
+          return;
+        }
+
+        const questCardContent = document.getElementById(`quest-card-content-${i}`);
+
+        if (questCardContent.style.maxHeight) {
+          questCardContent.style.maxHeight = null;
+        } else {
+          questCardContent.style.maxHeight = questCardContent.scrollHeight + "px";
+        }
+      });
+    }
+  })()
+</script>

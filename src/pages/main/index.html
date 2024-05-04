@@ -1,0 +1,60 @@
+<main id="main"></main>
+
+<script type="module">
+  (() => {
+    const setSectionsContent = async (data) => {
+      const mainElement = document.getElementById('main');
+
+      if (!data) {
+        mainElement.innerHTML = <?= include('pages/components/loading') ?>;
+        return;
+      }
+      
+      const profileSection = await asyncInclude(
+        "pages/main/profileSection", data.profileSection
+      );
+
+      const settingsSection = await asyncInclude(
+        "pages/main/settingsSection", data.settingsSection
+      );
+
+      const currentQuestSection = await asyncInclude(
+        "pages/main/currentQuestSection", data.currentQuestSection
+      );
+
+      const questsSection = await asyncInclude(
+        "pages/main/questsSection", data.questsSection
+      );
+
+      mainElement.innerHTML = `
+        ${profileSection}
+        ${settingsSection}
+        ${currentQuestSection}
+        ${questsSection}
+      `;
+
+      loadScriptsForElement(mainElement);
+    }
+
+    /* GLOBALS */
+    const loadPage = async () => {
+      await setSectionsContent();
+
+      const dataPromise = new Promise((resolve, reject) => {
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).page_getMainData();
+      });
+
+      try {
+        const data = await dataPromise;
+        setSectionsContent(data);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    }
+
+    /* INIT */
+    loadPage();
+
+    /* ####### */
+  })()
+</script>

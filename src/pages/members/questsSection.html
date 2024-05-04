@@ -1,0 +1,105 @@
+<div class="section">
+  <h2>Quests of members</h2>
+
+  <div class="section-content">
+    <div class="quest-list-container">
+      <? for(let i = 0; i < props.quests.length; i++) { ?>
+        <div class="quest-card">
+          <h3 class="quest-card-title">
+            <?= props.quests[i].text ?> (<?= props.quests[i].count ?>)
+          </h3>
+
+          <div class="quest-card-content" id="quest-card-content-<?= i ?>">
+            <ul>
+              <li>
+                <strong>Count:</strong>
+                <?= props.quests[i].count ?>
+              </li>
+              <li>
+                <strong>Drops:</strong>
+                <ul>
+                  <li>
+                    <strong>Gold:</strong>
+                    <?= props.quests[i].drop.gp ?>
+                  </li>
+                  <li>
+                    <strong>Exp:</strong>
+                    <?= props.quests[i].drop.exp ?>
+                  </li>
+                  <li>
+                    <strong>Items:</strong>
+                    <? if (props.quests[i].drop.items.length > 0) { ?>
+                      <ul>
+                        <? for(let j = 0; j < props.quests[i].drop.items.length; j++) { ?>
+                          <li><?= props.quests[i].drop.items[j].text ?></li>
+                        <? } ?>
+                      </ul>
+                    <? } else { ?>
+                      <i>no item drops for this quest</i>
+                    <? } ?>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <!-- Possible actions -->
+            <div class="quest-action-buttons">
+              <? if (props.quests[i]._links.length > 0) { ?>
+                <? for (let j = 0; j < props.quests[i]._links.length; j++) { ?>
+                  <? if (props.quests[i]._links[j].action === 'api/v1/start') { ?>
+                    <button
+                      class="button"
+                      id="start-<?= props.quests[i].key ?>-<?= props.quests[i]._links[j].userId ?>"
+                      onclick="forceStartQuest(
+                        '<?= props.quests[i]._links[j].href ?>',
+                        'start-<?= props.quests[i].key ?>-<?= props.quests[i]._links[j].userId ?>'
+                      )"
+                    >
+                      <?= props.quests[i]._links[j].text ?>
+                    </button>
+                  <? } else if (props.quests[i]._links[j].action === 'api/v1/invite') { ?>
+                    <button
+                      class="button"
+                      id="invite-<?= props.quests[i].key ?>-<?= props.quests[i]._links[j].userId ?>"
+                      onclick="inviteMembersToQuest(
+                        '<?= props.quests[i]._links[j].href ?>',
+                        '<?= props.quests[i].key ?>',
+                        'invite-<?= props.quests[i].key ?>-<?= props.quests[i]._links[j].userId ?>'
+                      )"
+                    >
+                      <?= props.quests[i]._links[j].text ?>
+                    </button>
+                  <? } ?>
+                <? } ?>
+              <? } else { ?>
+                <i>no actions available</i>
+              <? } ?>
+            </div>
+          </div>
+        </div>
+      <? } ?>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const questCards = document.getElementsByClassName('quest-card');
+
+    for (let i = 0; i < questCards.length; i++) {
+      questCards[i].addEventListener('click', (e) => {
+        if (e.srcElement.classList.contains('button')) {
+          return;
+        }
+
+        const questCardContent = document.getElementById(`quest-card-content-${i}`);
+
+        if (questCardContent.style.maxHeight) {
+          questCardContent.style.maxHeight = null;
+        } else {
+          questCardContent.style.maxHeight = questCardContent.scrollHeight + "px";
+        }
+      });
+    }
+  })()
+</script>

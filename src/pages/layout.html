@@ -1,0 +1,154 @@
+<? const constantData = props_getConstantData(); ?>
+
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('css/styles') ?>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="header-title">
+        <h4>
+          <?= constantData.scriptName ?> 
+          <u>
+            <?= constantData.scriptVersion ?>
+          </u>
+        </h4>
+        <i>logged in as <a class="link" href="https://habitica.com/profile/<?= constantData.userId ?>"><?= constantData.profileName ?></a></i>
+      </div>
+      <nav>
+        <ul class="navigation-buttons">
+          <li><button class="button" onclick="navigate('main')">Main</button></li>
+          <li><button class="button" onclick="navigate('settings')">Settings</button></li>
+          <li><button class="button" onclick="navigate('members')">Members</button></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div id="content"></div>
+
+    <footer>
+      <p>
+        <i>
+          <?= constantData.scriptName ?> 
+          <u>
+            <?= constantData.scriptVersion ?>
+          </u>
+        </i>
+        <br>
+        <i>Developed by <a class="link" href="https://habitica.com/profile/90c987f2-cf51-442f-b932-3c4194d56ad6">Kanguste</a></i>
+      </p>
+      <a class="footer-github-icon" href="https://github.com/MM1132/habitica-quest-manager">
+        <?!= include("pages/components/githubIcon") ?>
+      </a>
+    </footer>
+    
+    <script>
+      /* INIT */
+      window.onload = () => {
+        navigate('main');
+      }
+
+      /* GLOBALS */
+      window.asyncInclude = async (path, props) => {
+        const includePromise = new Promise((resolve, reject) => {
+          google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler(reject)
+            .include(path, props);
+        });
+
+        try {
+          return await includePromise;
+        } catch (error) {
+          console.error(`Failed to include ${path}:`, error);
+        }
+      }
+
+      window.loadScriptsForElement = (element) => {
+        Array.from(element.querySelectorAll('script')).forEach(oldScript => {
+          const newScript = document.createElement('script');
+          newScript.textContent = oldScript.innerText;
+          document.head.appendChild(newScript).parentNode.removeChild(newScript);
+        });
+      }
+
+      window.reloadPage = () => navigate(currentPage);
+
+      window.forceStartQuest = (userLink, buttonId) => {
+        const startButton = document.getElementById(buttonId);
+        const initialTextContent = startButton.textContent;
+
+        startButton.style.pointerEvents = 'none';
+        startButton.textContent = "Starting... Wait!";
+
+        google.script.run.withSuccessHandler((response) => {
+          reloadPage();
+        }).withFailureHandler(() => {
+          startButton.style.pointerEvents = 'auto';
+          startButton.textContent = initialTextContent;
+          alert('Force-starting the quest failed. Please contact the developer (Kanguste) about this <3');
+        }).page_forceStartQuest(userLink);
+      }
+
+      window.inviteMembersToQuest = (userLink, questKey, buttonId) => {
+        const inviteButton = document.getElementById(buttonId);
+        const initialTextContent = inviteButton.textContent;
+
+        inviteButton.style.pointerEvents = 'none';
+        inviteButton.textContent = "Inviting... Wait!";
+
+        google.script.run.withSuccessHandler((response) => {
+          reloadPage();
+        }).withFailureHandler(() => {
+          inviteButton.style.pointerEvents = 'auto';
+          inviteButton.textContent = initialTextContent;
+          alert('Inviting members to the quest failed. Please contact the developer (Kanguste) about this <3');
+        }).page_inviteMembersToQuest(userLink, questKey);
+      }
+
+      /* ####### */
+
+      let currentPage = 'main';
+
+      const preloadedPages = {
+        main: <?= include('pages/main/index') ?>,
+        settings: <?= include('pages/settings') ?>,
+        members: <?= include('pages/members/index') ?>,
+      };
+
+      const navigate = (page) => {
+        const content = document.getElementById('content');
+        content.innerHTML = `<?= include('pages/components/loading') ?>`;
+        
+        disableNavigationButtons();
+
+        try {
+          content.innerHTML = preloadedPages[page] || 'Page not found :c';
+
+          loadScriptsForElement(content);
+
+          enableNavigationButtons();
+
+          currentPage = page;
+        } catch (error) {
+          enableNavigationButtons();
+          content.innerHTML = `<h1>Failed to load page</h1><br>${error.message}`;
+        }
+      }
+
+      const disableNavigationButtons = () => {
+        document.querySelectorAll(".navigation-buttons .button").forEach(button => {
+          button.style.pointerEvents = 'none';
+        });
+      }
+
+      const enableNavigationButtons = () => {
+        document.querySelectorAll(".navigation-buttons .button").forEach(button => {
+          button.style.pointerEvents = 'auto';
+        });
+      }
+    </script>
+  </body>
+</html>

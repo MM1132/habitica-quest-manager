@@ -15,6 +15,7 @@
     --color-text: rgb(255, 255, 255);
     --color-heading: #eb9800;
     --color-text-info: #ff2323;
+    --color-success: rgb(46, 228, 46);
   }
 
   * {
@@ -32,6 +33,36 @@
   body {
     margin: 0;
     background-color: var(--color-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  footer { 
+    margin-top: auto;
+    color: var(--color-text);
+    background-color: var(--color-primary-dark);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  footer > p {
+    text-align: center;
+    flex: 1;
+  }
+
+  .footer-github-icon {
+    padding: 15px;
+  }
+
+  .footer-github-icon > * {
+    width: 30px;
+    height: 30px;
+  }
+
+  .footer-github-icon:hover > * {
+    color: var(--color-primary-light);
   }
 
   h1, h3 {
@@ -111,6 +142,10 @@
     line-height: 1.71;
     font-weight: 700;
     box-shadow: 0 1px 3px 0 rgba(26,24,29,.12), 0 1px 2px 0 rgba(26,24,29,.24);
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
   }
 
   .button:hover {
@@ -118,7 +153,7 @@
     box-shadow: 0 3px 6px 0 rgba(26,24,29,.16), 0 3px 6px 0 rgba(26,24,29,.24);
   }
 
-  #form {
+  .simple-form {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -127,7 +162,7 @@
     margin-bottom: 10px;
   }
 
-  #form-submit-button {
+  .simple-form-submit-button {
     margin-top: 10px;
   }
 
@@ -160,6 +195,8 @@
     color: var(--color-text-info);
   }
 
+  /* QUEST LIST/CARD { */
+
   .quest-list-container {
     gap: 10px;
     flex-direction: column;
@@ -185,6 +222,13 @@
     font-size: 14px;
   }
 
+  .quest-card-content {
+    transition: max-height 0.5s;
+    overflow: hidden;
+    max-height: 0;
+  }
+  /* } QUEST LIST/CARD */
+
   /* MODAL THINGS { */
 
   .modal {
@@ -205,7 +249,10 @@
     padding: 20px;
     width: 80%;
     border-radius: 8px;
-    box-shadow: 0 1px 10px 1px var(--color-dark), 0 5px 20px 5px var(--color-dark-3)
+    box-shadow: 0 1px 10px 1px var(--color-dark), 0 5px 20px 5px var(--color-dark-3);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
   }
 
   .close-modal {
@@ -227,10 +274,98 @@
 
   /* } MODAL THINGS */
 
-  .quest-card-content {
-    transition: max-height 0.5s;
-    overflow: hidden;
-    max-height: 0;
+  /* MEMBERS PAGE { */
+  .member-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
+
+  .member-form .member-link {
+    width: 100%;
+  }
+
+  .remove-member-modal-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .form-label {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* } MEMBERS PAGE */
+
+  /* LOADING PAGE { */
+
+  .loading {
+    color: var(--color-primary-dark);
+    margin: 20px;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .loading svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* } LOADING PAGE */
+
+  .quest-action-buttons {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .icon-container {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    background-color: var(--color-light);
+    border: 1px solid var(--color-primary-dark);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+  }
+  
+  .member-fail-icon {
+    border-color: var(--color-text-info);
+    color: var(--color-text-info);
+  }
+
+  .members-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--color-light);
+    box-shadow: 0 1px 3px 0 var(--color-dark-3), 0 1px 2px 0 var(--color-dark-3);
+  }
+
+  .remove-member-icon {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .remove-member-icon:hover > * {
+    color: var(--color-primary-light);
+  }
+
+  .remove-member-icon > * {
+    cursor: pointer;
+    color: var(--color-text-info);
+    width: 26px;
+    height: 26px;
+  }
+
 
 </style>

@@ -1,0 +1,185 @@
+<div class="section">
+  <h2>Members List</h2>
+
+  <div class="section-content">
+    <? if(props.members.length === 0) { ?>
+      <i>
+        Here you can link your party members' Quest Managers to your own. 
+        Adding a member will grant you possibility to start their quests from within your own Quest Manager.
+      </i>
+      <br><br>
+      <i>
+        The list of quests down below will show you the quests of all the members you have added, 
+        including the quests you have in your inventory. Since you are yet to add members to this 
+        "Members List", the list of quests down below shows only the quests owned by you. 
+      </i>
+      <br><br>
+      <i>
+        Press <strong>Add member</strong> to link your first party member to your Quest Manager :) 
+      </i>
+    <? } ?>
+
+    <ul>
+      <? for (let i = 0; i < props.members.length; i++) { ?>
+        <li class="members-row">
+          <? if (!props.members[i].success) { ?>
+            <div class="icon-container member-fail-icon">
+              <?!= include('pages/components/alertIcon') ?>
+            </div>
+          <? } ?>
+
+          <div>
+            <?= props.members[i].profileName ?> 
+          </div>
+
+          <? if (props.members[i].success) { ?>
+            <strong>(<?= props.members[i].scriptVersion ?>)</strong>
+            <u><?= props.members[i].questStartThreshold ?>%</u>
+          <? } else { ?>
+            <strong>(old link)</strong>
+          <? } ?>
+
+          <div 
+            class="remove-member-icon"
+            onclick="openRemoveMemberModal('<?= props.members[i].id ?>', '<?= props.members[i].profileName ?>')"
+          >
+            <?!= include('pages/components/trashIcon') ?>
+          </div>
+        </li>
+      <? } ?>
+    </ul>
+
+    <button class="button" onclick="openModal();">Add member</button>
+  </div>
+</div>
+
+<div class="modal" id="remove-member-modal">
+  <div class="modal-content">
+    <div class="modal-title-bar">
+      <h2>Remove a member</h2>
+      <div class="close-modal" onclick="closeRemoveMemberModal();">
+        <?!= include('pages/components/closeIcon') ?>
+      </div>
+    </div>
+    <div id="remove-member-modal-content"></div>
+  </div>
+</div>
+
+<div class="modal" id="add-member-modal">
+  <div class="modal-content">
+    <div class="modal-title-bar">
+      <h2>Add a member</h2>
+      <div class="close-modal" onclick="closeModal();">
+        <?!= include('pages/components/closeIcon') ?>
+      </div>
+    </div>
+
+    <div class="member-form">
+      <label for="password" class="form-label">
+        <h3>Password*</h3>
+        <input class="text-field" type="password" id="password" placeholder="Your quest manager password*" required>
+      </label>
+
+      <label for="member-link" class="form-label">
+        <h3>Your party member's Quest Manager link</h3>
+        <input class="text-field" type="text" id="member-link" placeholder="Enter link they gave you">
+      </label>
+
+      <button id="submit-button" class="button" onclick="submitMembersForm()">Add Member</button>
+
+      <i id="loading-bar"></i>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const removeMemberModal = document.getElementById('remove-member-modal');
+
+    window.submitMembersForm = () => {
+      const loadingBar = document.getElementById('loading-bar');
+      const submitButton = document.getElementById('submit-button');
+
+      const password = document.getElementById('password').value;
+      const memberLink = document.getElementById('member-link').value;
+
+      loadingBar.innerHTML = 'Loading...';
+      submitButton.style.pointerEvents = 'none';
+
+      google.script.run.withSuccessHandler((members) => {
+        reloadPage();
+      }).withFailureHandler((error) => {
+        document.getElementById('loading-bar').innerHTML = error.message;
+        submitButton.style.pointerEvents = 'auto';
+      }).props_addNewMember(password, memberLink);
+    }
+
+    window.addEventListener('click', (event) => {
+      const modal = document.getElementById('add-member-modal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      } else if (event.target === removeMemberModal) {
+        removeMemberModal.style.display = 'none';
+      }
+    });
+
+    window.openModal = () => {
+      document.getElementById('add-member-modal').style.display = 'block';
+    }
+
+    window.closeModal = () => {
+      document.getElementById('add-member-modal').style.display = 'none';
+    }
+
+    // REMOVE
+    window.removeMember = (memberId) => {
+      const removeMemberButton = document.getElementById('remove-member-button');
+      const passwordField = document.getElementById('remove-password');
+      const removeLoadingBar = document.getElementById('remove-loading-bar');
+
+      removeMemberButton.style.pointerEvents = 'none';
+      removeLoadingBar.innerHTML = 'Loading...';
+
+      google.script.run.withSuccessHandler(() => {
+        reloadPage();
+      }).withFailureHandler((error) => {
+        passwordField.value = '';
+        removeMemberButton.style.pointerEvents = 'auto';
+        
+        removeLoadingBar.innerHTML = error.message;
+      }).page_removeMember(passwordField.value, memberId);
+    }
+
+    window.openRemoveMemberModal = (id, profileName) => {
+      const content = document.getElementById('remove-member-modal-content');
+      content.innerHTML = `
+        <div class="member-form">
+          <div>
+            Are you sure you want to remove <strong>${profileName}</strong> from the members' list? 
+          </div>
+          <label for="password" class="form-label">
+            <h3>Password*</h3>
+            <input class="text-field" type="password" id="remove-password" placeholder="Your quest manager password (required)" required>
+          </label>
+          <div class="remove-member-modal-buttons">
+            <button
+              class="button"
+              onclick="removeMember('${id}');"
+            >
+              Yes, remove them!
+            </button>
+            <button class="button" id="remove-member-button" onclick="closeRemoveMemberModal();">No</button>
+          </div>
+          <i id="remove-loading-bar"></i>
+        </div>
+        `;
+
+      removeMemberModal.style.display = 'block';
+    }
+
+    window.closeRemoveMemberModal = () => {
+      removeMemberModal.style.display = 'none';
+    }
+  })()
+</script>

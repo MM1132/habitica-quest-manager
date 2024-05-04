@@ -1,53 +1,44 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <base target="_top">
-    <?!= include('css/styles') ?>
-  </head>
-  <body>
-    <script>
-      const sumbitSettings = () => {
-        const password = document.getElementById('password').value;
-        const questStartThreshold = document.getElementById('questStartThreshold').value;
+<main>
+  <center>
+    <div class="section">
+      <h2>Settings</h2>
+      <p class="warning-text">
+        Enter the same password you first entered in the Setup screen. 
+        New settings will only take affect if the entered password is correct. 
+      </p>
 
-        document.getElementById('loading-bar').innerHTML = 'Loading...';
+      <div class="simple-form">
+        <h3>Password*</h3>
+        <input class="text-field" type="password" id="password" placeholder="Enter password*" required>
 
-        google.script.run.withSuccessHandler(() => {
-          document.getElementById('loading-bar').innerHTML = 'Settings updated!';
-          password.value = '';
-          questStartThreshold.value = '';
-        }).withFailureHandler((error) => {
-          document.getElementById('loading-bar').innerHTML = error.message;
-        }).updateSettings(password, questStartThreshold);
-      }
-    </script>
+        <hr/>
 
-    <?!= include('pages/components/header'); ?>
-    
-    <main>
-      <center>
-        <div class="section">
-          <h2>Settings</h2>
-          <p class="warning-text">
-            Enter the same password you first entered in the Setup screen. 
-            New settings will only take affect if the entered password is correct. 
-          </p>
+        <h3>Quest Start Threshold</h3>
+        <input class="text-field" type="number" id="questStartThreshold" placeholder="Enter percentage out of 100">
 
-          <div id="form">
-            <h3>Password*</h3>
-            <input class="text-field" type="password" id="password" placeholder="Enter password*" required>
+        <button class="button simple-form-submit-button" onclick="submitSettingsForm()">Apply Settings</button>
 
-            <hr/>
+        <i id="loading-bar"></i>
+      </div>
+    </div>
+  </center>
+</main>
 
-            <h3>Quest Start Threshold</h3>
-            <input class="text-field" type="number" id="questStartThreshold" placeholder="Enter percentage out of 100">
+<script type="module">
+  (() => {
+    window.submitSettingsForm = () => {
+      const password = document.getElementById('password').value;
+      const questStartThreshold = document.getElementById('questStartThreshold').value;
 
-            <button class="button" id="form-submit-button" onclick="sumbitSettings()">Apply Settings</button>
+      document.getElementById('loading-bar').innerHTML = 'Loading...';
 
-            <i id="loading-bar"></i>
-          </div>
-        </div>
-      </center>
-    </main>
-  </body>
-</html>
+      google.script.run.withSuccessHandler(() => {
+        document.getElementById('loading-bar').innerHTML = 'Settings updated!';
+        password.value = '';
+        questStartThreshold.value = '';
+      }).withFailureHandler((error) => {
+        document.getElementById('loading-bar').innerHTML = error.message;
+      }).props_updateSettings(password, questStartThreshold);
+    }
+  })()
+</script>
