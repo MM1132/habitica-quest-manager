@@ -57,6 +57,7 @@ You will need to be logged into a Google Account for this to work. The following
 18. If everything done correctly, you should see the Quest Manager's website with a Setup form
 19. Follow the instructions on that page to set up the Quest Manager
 20. Once the setup is done, share the same link you just copied with your party members. Woohoo! :) 
+21. Also, go to the "Members" tab and add the links of your other party members! 
 
 If the instructions happen to be difficult to follow, anyone is very welcome to either create an Issue or a Pull Request on this GitHub repository :) 
 
