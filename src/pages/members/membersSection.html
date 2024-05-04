@@ -22,14 +22,8 @@
     <ul>
       <? for (let i = 0; i < props.members.length; i++) { ?>
         <li class="members-row">
-          <? if (props.members[i].success) { ?>
-            <div class="icon-container member-success-icon">
-              <?!= include('pages/components/checkIcon') ?>
-            </div>
-          <? } else { ?>
-            <div
-              class="icon-container member-fail-icon"
-            >
+          <? if (!props.members[i].success) { ?>
+            <div class="icon-container member-fail-icon">
               <?!= include('pages/components/alertIcon') ?>
             </div>
           <? } ?>

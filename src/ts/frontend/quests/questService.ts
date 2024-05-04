@@ -22,6 +22,17 @@ const translatedQuests: TranslatedQuestsData = {
 export const translateQuestByKey = (name: string): TranslatedQuest => {
   const translatedQuest = translatedQuests[name];
 
+  if (!translatedQuest) {
+    return {
+      text: `${name} (missing translation)`,
+      drop: {
+        gp: 0,
+        exp: 0,
+        items: [],
+      },
+    };
+  }
+
   return {
     text: translatedQuest.text,
     drop: {
