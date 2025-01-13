@@ -32,7 +32,7 @@ interface MainPageData {
 
 export const page_getMainData = (): MainPageData => {
   const user = habitica_getUser();
-  const party = habitica_getParty();
+  const party = habitica_getParty(user.party._id);
   const constants = props_getConstantData();
   const settings = props_getQuestManagerSettings();
   const currentQuestLeaderUser: HabiticaUser | null = party.quest.leader

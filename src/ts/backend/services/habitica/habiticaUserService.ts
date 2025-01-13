@@ -3,7 +3,7 @@ import { HabiticaUser } from './types/habiticaUser';
 
 export const habitica_getUser = (): HabiticaUser => {
   const user = doHabiticaApiRequest<HabiticaUser>(
-    'https://habitica.com/api/v4/user',
+    'https://habitica.com/api/v3/user',
     {
       method: HttpMethod.GET,
     }
@@ -30,7 +30,7 @@ export const habitica_getUser = (): HabiticaUser => {
 
 export const habitica_getUserById = (userId: string) => {
   return doHabiticaApiRequest<HabiticaUser>(
-    `https://habitica.com/api/v4/members/${userId}`,
+    `https://habitica.com/api/v3/members/${userId}`,
     {
       method: HttpMethod.GET,
     }

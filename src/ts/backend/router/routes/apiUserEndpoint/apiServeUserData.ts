@@ -25,7 +25,7 @@ export const getAwesomeQuestManagerUserData = (): AQM_User => {
   const aqmGlobalData = props_getConstantData();
 
   const habiticaUser = habitica_getUser();
-  const habiticaParty = habitica_getParty();
+  const habiticaParty = habitica_getParty(habiticaUser.party._id);
 
   const aqmQuests = apiAssembleAQMQuests(
     habiticaUser,
