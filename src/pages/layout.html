@@ -22,6 +22,7 @@
           <li><button class="button" onclick="navigate('main')">Main</button></li>
           <li><button class="button" onclick="navigate('settings')">Settings</button></li>
           <li><button class="button" onclick="navigate('members')">Members</button></li>
+          <li><button class="button" onclick="navigate('questQueue')">Quest Queue</button></li>
         </ul>
       </nav>
     </div>
@@ -86,7 +87,7 @@
         google.script.run.withSuccessHandler((response) => {
           reloadPage();
         }).withFailureHandler(() => {
-          startButton.style.pointerEvents = 'auto';
+          startButton.style.pointerEvents = 'auto';loadScriptsForElement
           startButton.textContent = initialTextContent;
           alert('Force-starting the quest failed. Please contact the developer (Kanguste) about this <3');
         }).page_forceStartQuest(userLink);
@@ -116,37 +117,41 @@
         main: <?= include('pages/main/index') ?>,
         settings: <?= include('pages/settings') ?>,
         members: <?= include('pages/members/index') ?>,
+        questQueue: <?= include('pages/questQueue/index') ?>,
       };
 
       const navigate = (page) => {
         const content = document.getElementById('content');
         content.innerHTML = `<?= include('pages/components/loading') ?>`;
-        
-        disableNavigationButtons();
 
         try {
           content.innerHTML = preloadedPages[page] || 'Page not found :c';
 
           loadScriptsForElement(content);
 
-          enableNavigationButtons();
-
           currentPage = page;
         } catch (error) {
-          enableNavigationButtons();
           content.innerHTML = `<h1>Failed to load page</h1><br>${error.message}`;
         }
       }
 
+      const navigationButtons = document.querySelectorAll(".navigation-buttons .button");
+
+      const setNavigationButtonsStyle = (styleFunction) => {
+        navigationButtons.forEach(styleFunction);
+      }
+
       const disableNavigationButtons = () => {
-        document.querySelectorAll(".navigation-buttons .button").forEach(button => {
+        setNavigationButtonsStyle(button => {
           button.style.pointerEvents = 'none';
+          button.style.opacity = '0.5';
         });
       }
 
       const enableNavigationButtons = () => {
-        document.querySelectorAll(".navigation-buttons .button").forEach(button => {
+        setNavigationButtonsStyle(button => {
           button.style.pointerEvents = 'auto';
+          button.style.opacity = '1';
         });
       }
     </script>

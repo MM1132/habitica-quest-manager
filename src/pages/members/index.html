@@ -34,8 +34,10 @@
       });
 
       try {
+        disableNavigationButtons();
         const data = await dataPromise;
-        setSectionsContent(data);
+        await setSectionsContent(data);
+        enableNavigationButtons();
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
