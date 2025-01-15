@@ -1,4 +1,4 @@
-import { AUTHOR_ID, SCRIPT_NAME } from '../../index';
+import { props_getConstantData } from '../services/properties/propsGlobalDataService';
 
 export enum HttpMethod {
   GET = 'get',
@@ -44,14 +44,14 @@ export const doHabiticaApiRequest = <RETURN_TYPE>(
   url: string,
   params: RequestParams
 ): RETURN_TYPE => {
-  const USER_ID =
-    PropertiesService.getScriptProperties().getProperty('userId') || '';
+  const { authorId, scriptName, userId } = props_getConstantData();
+
   const API_TOKEN =
     PropertiesService.getScriptProperties().getProperty('apiToken') || '';
 
   const HEADERS = {
-    'x-client': `${AUTHOR_ID}-${SCRIPT_NAME}`,
-    'x-api-user': USER_ID,
+    'x-client': `${authorId}-${scriptName}`,
+    'x-api-user': userId,
     'x-api-key': API_TOKEN,
   };
 

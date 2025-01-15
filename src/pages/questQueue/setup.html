@@ -1,0 +1,32 @@
+<div class="section">
+  <h2>Quest Queue Setup</h2>
+  <? if (props.isPartyLeader === true) { ?>
+    <div class="section-content">
+      Since you are the leader of your party, only <strong>YOU</strong> can set up the Quest Queue for your party. 
+      <br>
+      <br>
+      Your <strong>Quest Queue</strong> is currently not yet setup. 
+      If you wish to do so, use the below button to set it up. 
+      This will only be done at your own risk, as this feature is still actively being worked on by the developer. 
+      It may function already as for now, but it may also not. If you decide to give it a shot, 
+      please also message
+      <i><a class="text-link link" href="https://habitica.com/profile/90c987f2-cf51-442f-b932-3c4194d56ad6">Robert Reimann (Kanguste)</a></i>
+      on Habitica and let him know what you think of it. 
+      <span class="heart-icon">
+        <?!= include('pages/components/heartIcon') ?>
+      </span>
+    </div>
+    <button class="button" onclick="enableQuestQueue()">
+      Enable Quest Queue
+    </button>
+  <? } else { ?>
+    Only a party leader can setup the quest queue for their party in their Quest Manager. 
+    If you wish this to be set up, please contact your party leader. 
+  <? } ?>
+</div>
+
+<script>
+  const enableQuestQueue = () => {
+    console.log("Enabling Quest Queue");
+  }
+</script>

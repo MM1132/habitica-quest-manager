@@ -87,7 +87,7 @@
         google.script.run.withSuccessHandler((response) => {
           reloadPage();
         }).withFailureHandler(() => {
-          startButton.style.pointerEvents = 'auto';loadScriptsForElement
+          startButton.style.pointerEvents = 'auto';
           startButton.textContent = initialTextContent;
           alert('Force-starting the quest failed. Please contact the developer (Kanguste) about this <3');
         }).page_forceStartQuest(userLink);
@@ -135,6 +135,7 @@
         }
       }
 
+      /* Navigation buttons */
       const navigationButtons = document.querySelectorAll(".navigation-buttons .button");
 
       const setNavigationButtonsStyle = (styleFunction) => {

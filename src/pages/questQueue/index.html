@@ -1,9 +1,47 @@
-<main id="main">
-	<li>Welcome to the Awesome Quest Queue!</li>
-</main>
+<main id="main"></main>
 
 <script type="module">
-	(() => {
-		console.log("Loading the quest queue...");
-	})();
+  (() => {
+    const setSectionsContent = async (data) => {
+      const mainElement = document.getElementById('main');
+
+      if (!data) {
+        mainElement.innerHTML = <?= include('pages/components/loading') ?>;
+        return;
+      }
+
+      if (data.questQueueActive === false) {
+        mainElement.innerHTML = await asyncInclude('pages/questQueue/setup', data);
+      } else {
+        const mainSection = await asyncInclude(
+          "pages/questQueue/mainSection", data.data.mainSection
+        );
+
+        mainElement.innerHTML = `
+          ${mainSection}
+        `;
+      }
+
+      loadScriptsForElement(mainElement);
+    }
+
+    const loadPage = async () => {
+      await setSectionsContent();
+
+      const dataPromise = new Promise((resolve, reject) => {
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).page_getQuestQueueData();
+      });
+
+      try {
+        disableNavigationButtons();
+        const data = await dataPromise;
+        await setSectionsContent(data);
+        enableNavigationButtons();
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    }
+
+    loadPage();
+  })();
 </script>
