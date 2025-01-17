@@ -16,7 +16,7 @@
         <?!= include('pages/components/heartIcon') ?>
       </span>
     </div>
-    <button class="button" onclick="enableQuestQueue()">
+    <button class="button" id="enable-quest-queue-button" onclick="enableQuestQueue()">
       Enable Quest Queue
     </button>
   <? } else { ?>
@@ -26,7 +26,22 @@
 </div>
 
 <script>
-  const enableQuestQueue = () => {
-    console.log("Enabling Quest Queue");
+  window.enableQuestQueue = () => {
+    const enableQuestQueueButton = document.getElementById("enable-quest-queue-button");
+
+    enableQuestQueueButton.style.pointerEvents = "none";
+    enableQuestQueueButton.innerText = "Enabling... Wait!";
+
+    google.script.run
+      .withSuccessHandler(() => {
+        reloadPage();
+      })
+      .withFailureHandler((err) => {
+        console.log("ERROR: Enabling quest queue:", err);
+
+        enableQuestQueueButton.style.pointerEvents = "auto";
+        enableQuestQueueButton.innerText = "Enable Quest Queue";
+      })
+      .page_enableQuestQueue();
   }
 </script>

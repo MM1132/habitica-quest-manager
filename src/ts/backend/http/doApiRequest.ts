@@ -27,10 +27,6 @@ export const doRequest = <RETURN_TYPE>(
   url: string,
   options: ApiRequestOptions
 ): RETURN_TYPE => {
-  options.payload = options.payload
-    ? JSON.stringify(options.payload)
-    : undefined;
-
   const response = UrlFetchApp.fetch(url, options);
   const parsedJson = JSON.parse(response.getContentText());
 

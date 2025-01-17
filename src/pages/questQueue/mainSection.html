@@ -1,7 +1,28 @@
 <div class="section">
-  <h2>Webhooks</h2>
+  <h2>Quest Queue</h2>
   <div class="section-content">
-    Is your webhook set? 
-    The answer is probably yes. 
+    <p>Your <strong>Quest Queue</strong> is set up. Yey!</p>
+    <button class="button" id="disable-quest-queue-button" onclick="disableQuestQueue();">
+      Disable Quest Queue
+    </button>
   </div>
 </div>
+
+<script>
+  window.disableQuestQueue = () => {
+    const disableQuestQueueButton = document.getElementById("disable-quest-queue-button");
+
+    disableQuestQueueButton.style.pointerEvents = "none";
+    disableQuestQueueButton.innerText = "Disabling... Wait!";
+
+    google.script.run
+      .withSuccessHandler(reloadPage)
+      .withFailureHandler((err) => {
+        console.log("ERROR Disabling quest queue:", err);
+
+        disableQuestQueueButton.style.pointerEvents = "auto";
+        disableQuestQueueButton.innerText = "Disable Quest Queue";
+      })
+      .page_disableQuestQueue();
+  }
+</script>

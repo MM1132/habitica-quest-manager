@@ -26,7 +26,7 @@
       loadScriptsForElement(mainElement);
     }
 
-    window.reloadPage = async () => {
+    const loadPage = async () => {
       await setSectionsContent();
 
       const dataPromise = new Promise((resolve, reject) => {
@@ -43,6 +43,6 @@
       }
     }
 
-    reloadPage();
+    loadPage();
   })()
 </script>

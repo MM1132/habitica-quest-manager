@@ -1,8 +1,11 @@
-export type HabiticaWebhookType =
-  | 'taskActivity'
-  | 'groupChatReceived'
-  | 'userActivity'
-  | 'questActivity';
+import { HabiticaWebhookOptions } from './habiticaWebhookOptions';
+
+export enum HabiticaWebhookType {
+  TASK_ACTIVITY = 'taskActivity',
+  GROUP_CHAT_RECEIVED = 'groupChatReceived',
+  USER_ACTIVITY = 'userActivity',
+  QUEST_ACTIVITY = 'questActivity',
+}
 
 export interface HabiticaGenericWebhook {
   type: HabiticaWebhookType;
@@ -10,7 +13,7 @@ export interface HabiticaGenericWebhook {
   enabled: boolean;
   failures: number;
   url: string;
-  options: any;
+  options: HabiticaWebhookOptions;
   id: string;
   createdAt: string;
   updatedAt: string;

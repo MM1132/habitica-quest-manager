@@ -1,12 +1,7 @@
-import { HabiticaGenericWebhook } from './commons';
-
-interface HabiticaUserActivityWebhookOptions {
-  petHatched: boolean;
-  mountRaised: boolean;
-  leveledUp: boolean;
-}
+import { HabiticaGenericWebhook, HabiticaWebhookType } from './commons';
+import { HabiticaUserActivityWebhookOptions } from './habiticaWebhookOptions';
 
 export interface HabiticaUserActivityWebhook extends HabiticaGenericWebhook {
-  type: 'userActivity';
+  type: HabiticaWebhookType.USER_ACTIVITY;
   options: HabiticaUserActivityWebhookOptions;
 }

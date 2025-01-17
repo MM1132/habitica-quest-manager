@@ -1,12 +1,7 @@
-import { HabiticaGenericWebhook } from './commons';
-
-interface HabiticaQuestActivityWebhookOptions {
-  questStarted: boolean;
-  questFinished: boolean;
-  questInvited: boolean;
-}
+import { HabiticaGenericWebhook, HabiticaWebhookType } from './commons';
+import { HabiticaQuestActivityWebhookOptions } from './habiticaWebhookOptions';
 
 export interface HabiticaQuestActivityWebhook extends HabiticaGenericWebhook {
-  type: 'questActivity';
+  type: HabiticaWebhookType.QUEST_ACTIVITY;
   options: HabiticaQuestActivityWebhookOptions;
 }

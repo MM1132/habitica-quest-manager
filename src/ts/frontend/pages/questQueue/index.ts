@@ -1,6 +1,7 @@
 import { habitica_getParty } from '../../../backend/services/habitica/habiticaGroupService';
 import { habitica_getUser } from '../../../backend/services/habitica/habiticaUserService';
 import { habitica_getWebhooks } from '../../../backend/services/habitica/habiticaWebhookService';
+import { HabiticaWebhookType } from '../../../backend/services/habitica/types/webhooks/commons';
 import { HabiticaWebhook } from '../../../backend/services/habitica/types/webhooks/habiticaWebhook';
 import { props_getConstantData } from '../../../backend/services/properties/propsGlobalDataService';
 
@@ -14,24 +15,23 @@ interface PageQuestQueueData {
   };
 }
 
-const getQuestQueueLabel = (): string => {
-  const { scriptName, scriptVersion } = props_getConstantData();
-
-  return `${scriptName}/${scriptVersion}/questQueue`;
-};
-
-const QUEST_QUEUE_WEBHOOK_LABEL = getQuestQueueLabel();
-
 export const page_getQuestQueueData = (): PageQuestQueueData => {
   const webhooks = habitica_getWebhooks();
   const user = habitica_getUser();
   const party = habitica_getParty(user.party._id);
+  const { baseUrl } = props_getConstantData();
 
   const isPartyLeader = party.leader.id === user.id;
 
   // If the quest queue hook does not exist, we simply return false
+  // The `isPartyLeader` will determine whether or not the user
+  // ...will be able to enable the quest queue
   if (
-    !webhooks.some((webhook) => webhook.label === QUEST_QUEUE_WEBHOOK_LABEL)
+    !webhooks.some(
+      (webhook) =>
+        webhook.url === baseUrl &&
+        webhook.type === HabiticaWebhookType.QUEST_ACTIVITY
+    )
   ) {
     return { questQueueActive: false, isPartyLeader };
   }
@@ -44,5 +44,3 @@ export const page_getQuestQueueData = (): PageQuestQueueData => {
     },
   };
 };
-
-export const page_enableQuestQueue = () => {};

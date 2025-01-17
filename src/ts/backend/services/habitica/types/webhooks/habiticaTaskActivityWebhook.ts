@@ -1,13 +1,7 @@
-import { HabiticaGenericWebhook } from './commons';
-
-interface HabiticaTaskActivityWebhookOptions {
-  created: boolean;
-  updated: boolean;
-  deleted: boolean;
-  scored: boolean;
-}
+import { HabiticaGenericWebhook, HabiticaWebhookType } from './commons';
+import { HabiticaTaskActivityWebhookOptions } from './habiticaWebhookOptions';
 
 export interface HabiticaTaskActivityWebhook extends HabiticaGenericWebhook {
-  type: 'taskActivity';
+  type: HabiticaWebhookType.TASK_ACTIVITY;
   options: HabiticaTaskActivityWebhookOptions;
 }
