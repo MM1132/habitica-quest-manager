@@ -19,6 +19,7 @@ export interface MembersPageData {
 }
 
 export const page_getMembersData = (): MembersPageData => {
+  // Get all users we have links for
   const users = props_getAllMembers().map((memberProperty) => {
     try {
       return aqm_getUserByLink(memberProperty.link);
@@ -33,7 +34,10 @@ export const page_getMembersData = (): MembersPageData => {
 
   const membersSection = assembleMembersPageMembersSection(users);
 
+  // Add our own user
   users.push(getAwesomeQuestManagerUserData());
+
+  // Get the quests section only with the users whom request was actually successful
   const questsSection = assembleMembersPageQuestSection(
     users.filter((user) => !('success' in user)) as AQM_User[]
   );

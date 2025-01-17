@@ -12,6 +12,7 @@ import { apiAssembleCurrentQuestParticipation } from './apiAssembleCurrentQuestP
 export enum AQM_QuestAction {
   start = AQM_ENDPOINTS.start,
   invite = AQM_ENDPOINTS.invite,
+  // addToQueue = 'addToQueue',
 }
 
 export type AQM_QuestLinks = Record<AQM_QuestAction, string>;
@@ -36,6 +37,15 @@ export const apiAssembleAQMQuestLinks = (
 
   if (!currentQuestStatus) {
     _links[AQM_QuestAction.invite] = constantData.baseUrl;
+
+    // // Get the number of quests already in the queue
+    // // that match the QuestKey and the userId
+    // const alreadyInQueue = props_getQuestQueue().some(
+    //   (quest) => quest.questKey === questKey
+    // );
+    // if (!alreadyInQueue) {
+    //   _links[AQM_QuestAction.addToQueue] = 'true';
+    // }
   } else if (
     currentQuestStatus === QuestStatus.INVITATIONS_SENT &&
     (user.id === party.quest.leader || user.id === party.leader.id)

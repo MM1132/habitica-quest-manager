@@ -2,6 +2,21 @@
   <h2>Quest Queue</h2>
   <div class="section-content">
     <p>Your <strong>Quest Queue</strong> is set up. Yey!</p>
+
+    <!-- Here will be the quest queue itself -->
+    <!-- For this to work, we need some information -->
+    <!-- That information would be: -->
+    <!-- All the quests that are in the queue -->
+    <!--
+      1. Position in the queue
+      2. Quest name
+      3. Player name (whose inventory we are starting the quest from)
+        This could possibly be a dropdown
+      4. Delete button
+    -->
+    <!-- We also need a "Save" button in the bottom, to save the queue into properties -->
+    
+
     <button class="button" id="disable-quest-queue-button" onclick="disableQuestQueue();">
       Disable Quest Queue
     </button>
@@ -14,7 +29,7 @@
 
     disableQuestQueueButton.style.pointerEvents = "none";
     disableQuestQueueButton.innerText = "Disabling... Wait!";
-
+    
     google.script.run
       .withSuccessHandler(reloadPage)
       .withFailureHandler((err) => {

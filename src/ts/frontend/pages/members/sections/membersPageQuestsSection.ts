@@ -54,11 +54,16 @@ export const assembleMembersPageQuestSection = (
 ): MembersPageQuestsSection => {
   const questsNoDuplicates: Record<string, MembersPageQuest> = {};
 
+  // You loop through all the users
   aqmUsers.forEach((aqmUser) => {
+    // And then you loop through all the quests of that user
     aqmUser.aqmQuests.forEach((aqmQuest) => {
+      // If the quest already exists in the quests
+      // simply increase the count
       if (aqmQuest.key in questsNoDuplicates) {
         questsNoDuplicates[aqmQuest.key].count += aqmQuest.count;
 
+        // Here we are adding the links of that user
         Object.entries(aqmQuest._links).forEach(([linkKey, linkValue]) => {
           if (linkKey === AQM_ENDPOINTS.invite) {
             questsNoDuplicates[aqmQuest.key]._links.push({
@@ -106,6 +111,12 @@ export const assembleMembersPageQuestSection = (
           ...translatedQuest,
         };
       }
+
+      // In which case do we want the "add to queue" button to be visible?
+      // If another quest is in progress, we can add this one to the queue
+      // The only two cases when we cannot add the quest to the queue are:
+      // 1. The quest is already in the queue
+      // 2. Or the quest is already in progress, then adding it to the queue makes no sense
     });
   });
 
