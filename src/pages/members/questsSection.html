@@ -44,30 +44,44 @@
 
             <!-- Possible actions -->
             <div class="quest-action-buttons">
-              <? if (props.quests[i]._links.length > 0) { ?>
-                <? for (let j = 0; j < props.quests[i]._links.length; j++) { ?>
-                  <? if (props.quests[i]._links[j].action === 'api/v1/start') { ?>
+              <? if (props.quests[i]._actions.length > 0) { ?>
+                <? for (let j = 0; j < props.quests[i]._actions.length; j++) { ?>
+                  <? if (props.quests[i]._actions[j].action === 'start') { ?>
                     <button
                       class="button"
-                      id="start-<?= props.quests[i].key ?>-<?= props.quests[i]._links[j].userId ?>"
+                      id="<?= props.quests[i]._actions[j].buttonId ?>"
                       onclick="forceStartQuest(
-                        '<?= props.quests[i]._links[j].href ?>',
-                        'start-<?= props.quests[i].key ?>-<?= props.quests[i]._links[j].userId ?>'
+                        '<?= props.quests[i]._actions[j].data ?>',
+                        '<?= props.quests[i]._actions[j].buttonId ?>'
                       )"
                     >
-                      <?= props.quests[i]._links[j].text ?>
+                      <?= props.quests[i]._actions[j].text ?>
                     </button>
-                  <? } else if (props.quests[i]._links[j].action === 'api/v1/invite') { ?>
+                  <? } else if (props.quests[i]._actions[j].action === 'invite') { ?>
                     <button
                       class="button"
-                      id="invite-<?= props.quests[i].key ?>-<?= props.quests[i]._links[j].userId ?>"
+                      id="<?= props.quests[i]._actions[j].buttonId ?>"
                       onclick="inviteMembersToQuest(
-                        '<?= props.quests[i]._links[j].href ?>',
+                        '<?= props.quests[i]._actions[j].data ?>',
                         '<?= props.quests[i].key ?>',
-                        'invite-<?= props.quests[i].key ?>-<?= props.quests[i]._links[j].userId ?>'
+                        '<?= props.quests[i]._actions[j].buttonId ?>'
                       )"
                     >
-                      <?= props.quests[i]._links[j].text ?>
+                      <?= props.quests[i]._actions[j].text ?>
+                    </button>
+                  <? } ?>
+                  <!-- Add to quest queue -->
+                  <? if (props.quests[i]._actions[j].action === 'queue') { ?>
+                    <button
+                      class="button"
+                      id="<?= props.quests[i]._actions[j].buttonId ?>"
+                      onclick="addToQuestQueue(
+                        '<?= props.quests[i]._actions[j].data ?>',
+                        '<?= props.quests[i].key ?>',
+                        '<?= props.quests[i]._actions[j].buttonId ?>'
+                      )"
+                    >
+                      <?= props.quests[i]._actions[j].text ?>
                     </button>
                   <? } ?>
                 <? } ?>

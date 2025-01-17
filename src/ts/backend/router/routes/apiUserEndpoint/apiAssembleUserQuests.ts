@@ -1,10 +1,13 @@
 import { AQM_ENDPOINTS } from '../../../../index';
-import { HabiticaParty } from '../../../services/habitica/types/habiticaParty';
+import {
+  HabiticaParty,
+  HabiticaPartyQuest,
+} from '../../../services/habitica/types/habiticaParty';
 import { HabiticaUser } from '../../../services/habitica/types/habiticaUser';
 import { PROPS_ConstantData } from '../../../services/properties/propsGlobalDataService';
 import { AQM_Settings } from '../../../services/properties/propsSettingsService';
 import {
-  QuestStatus,
+  AQM_QuestStatus,
   apiAssembleCurrentQuestStatus,
 } from './apiAssembleCurrentQuest';
 import { apiAssembleCurrentQuestParticipation } from './apiAssembleCurrentQuestParticipation';
@@ -12,7 +15,6 @@ import { apiAssembleCurrentQuestParticipation } from './apiAssembleCurrentQuestP
 export enum AQM_QuestAction {
   start = AQM_ENDPOINTS.start,
   invite = AQM_ENDPOINTS.invite,
-  // addToQueue = 'addToQueue',
 }
 
 export type AQM_QuestLinks = Record<AQM_QuestAction, string>;
@@ -20,6 +22,7 @@ export type AQM_QuestLinks = Record<AQM_QuestAction, string>;
 export interface AQM_Quest {
   key: string;
   count: number;
+  status: AQM_QuestStatus | null;
   _links: AQM_QuestLinks;
 }
 
@@ -37,17 +40,8 @@ export const apiAssembleAQMQuestLinks = (
 
   if (!currentQuestStatus) {
     _links[AQM_QuestAction.invite] = constantData.baseUrl;
-
-    // // Get the number of quests already in the queue
-    // // that match the QuestKey and the userId
-    // const alreadyInQueue = props_getQuestQueue().some(
-    //   (quest) => quest.questKey === questKey
-    // );
-    // if (!alreadyInQueue) {
-    //   _links[AQM_QuestAction.addToQueue] = 'true';
-    // }
   } else if (
-    currentQuestStatus === QuestStatus.INVITATIONS_SENT &&
+    currentQuestStatus === AQM_QuestStatus.INVITATIONS_SENT &&
     (user.id === party.quest.leader || user.id === party.leader.id)
   ) {
     const participationData = apiAssembleCurrentQuestParticipation(party);
@@ -62,6 +56,20 @@ export const apiAssembleAQMQuestLinks = (
   }
 
   return _links;
+};
+
+export const apiAssembleQuestStatus = (
+  partyQuest: HabiticaPartyQuest,
+  questKey: string
+): AQM_QuestStatus | null => {
+  if (!partyQuest.key || partyQuest.key !== questKey) {
+    return null;
+  }
+
+  if (partyQuest.active) {
+    return AQM_QuestStatus.IN_PROGRESS;
+  }
+  return AQM_QuestStatus.INVITATIONS_SENT;
 };
 
 export const apiAssembleAQMQuests = (
@@ -84,6 +92,7 @@ export const apiAssembleAQMQuests = (
       return {
         key: questKey,
         count: questCount,
+        status: apiAssembleQuestStatus(party.quest, questKey),
         _links,
       };
     });

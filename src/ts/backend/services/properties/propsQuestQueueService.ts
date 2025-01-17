@@ -1,6 +1,6 @@
 export interface PropsQuestQueueQuest {
   questKey: string;
-  playerId: string;
+  userId: string;
 }
 
 export const props_getQuestQueue = (): PropsQuestQueueQuest[] => {

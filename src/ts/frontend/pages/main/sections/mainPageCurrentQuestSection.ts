@@ -1,5 +1,5 @@
 import {
-  QuestStatus,
+  AQM_QuestStatus,
   apiAssembleCurrentQuestStatus,
 } from '../../../../backend/router/routes/apiUserEndpoint/apiAssembleCurrentQuest';
 import { apiAssembleCurrentQuestParticipation } from '../../../../backend/router/routes/apiUserEndpoint/apiAssembleCurrentQuestParticipation';
@@ -16,7 +16,7 @@ import { TranslatedQuest } from '../../../quests/types';
 
 export interface MainPageCurrentQuestSection extends TranslatedQuest {
   leaderProfileName: string;
-  status: QuestStatus;
+  status: AQM_QuestStatus;
   participantCount: number;
   participationPercentage: number;
   partyMemberCount: number;

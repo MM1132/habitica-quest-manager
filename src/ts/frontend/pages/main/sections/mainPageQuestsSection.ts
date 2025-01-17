@@ -1,5 +1,5 @@
 import {
-  QuestStatus,
+  AQM_QuestStatus,
   apiAssembleCurrentQuestStatus,
 } from '../../../../backend/router/routes/apiUserEndpoint/apiAssembleCurrentQuest';
 import {
@@ -19,7 +19,7 @@ export interface MainPageQuestsSection {
   profileName: string;
   quests: TranslatedAQM_Quest[];
   currentQuestKey: string | null;
-  currentQuestStatus: QuestStatus | null;
+  currentQuestStatus: AQM_QuestStatus | null;
 }
 
 export const assembleMainPageQuestSection = (

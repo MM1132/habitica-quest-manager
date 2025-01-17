@@ -109,6 +109,11 @@
         }).page_inviteMembersToQuest(userLink, questKey);
       }
 
+      window.addToQuestQueue = (userId, questKey, buttonId) => {
+        console.log("Adding quest to the queue...");
+        console.log(userId, questKey, buttonId);
+      }
+
       /* ####### */
 
       let currentPage = 'main';

@@ -1,18 +1,19 @@
 import { HabiticaPartyQuest } from '../../../services/habitica/types/habiticaParty';
 
-export enum QuestStatus {
+export enum AQM_QuestStatus {
   INVITATIONS_SENT = 'INVITATIONS_SENT',
   IN_PROGRESS = 'IN_PROGRESS',
 }
 
 export const apiAssembleCurrentQuestStatus = (
   partyQuest: HabiticaPartyQuest
-): QuestStatus | null => {
+): AQM_QuestStatus | null => {
   if (!partyQuest.key) {
     return null;
   }
+
   if (partyQuest.active) {
-    return QuestStatus.IN_PROGRESS;
+    return AQM_QuestStatus.IN_PROGRESS;
   }
-  return QuestStatus.INVITATIONS_SENT;
+  return AQM_QuestStatus.INVITATIONS_SENT;
 };
