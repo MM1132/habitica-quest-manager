@@ -16,6 +16,14 @@
     -->
     <!-- We also need a "Save" button in the bottom, to save the queue into properties -->
     
+    <ul>
+      <? for (let i = 0; i < props.quests.length; i++) { ?>
+        <li>
+          <?= i ?>.
+          <?= props.quests[i].text ?>
+        </li>
+      <? } ?>
+    </ul>
 
     <button class="button" id="disable-quest-queue-button" onclick="disableQuestQueue();">
       Disable Quest Queue

@@ -1,9 +1,10 @@
 import {
   habitica_deleteWebhook,
   habitica_getWebhooks,
-} from '../../../backend/services/habitica/habiticaWebhookService';
-import { HabiticaWebhookType } from '../../../backend/services/habitica/types/webhooks/commons';
-import { props_getConstantData } from '../../../backend/services/properties/propsGlobalDataService';
+} from '../../backend/services/habitica/habiticaWebhookService';
+import { HabiticaWebhookType } from '../../backend/services/habitica/types/webhooks/commons';
+import { props_getConstantData } from '../../backend/services/properties/propsGlobalDataService';
+import { props_deleteQuestQueue } from '../../backend/services/properties/propsQuestQueueService';
 
 export const page_disableQuestQueue = () => {
   // Firstly, find the webhook that gives us the quest queue
@@ -22,4 +23,6 @@ export const page_disableQuestQueue = () => {
   if (questQueueWebhook) {
     habitica_deleteWebhook(questQueueWebhook.id);
   }
+
+  props_deleteQuestQueue();
 };

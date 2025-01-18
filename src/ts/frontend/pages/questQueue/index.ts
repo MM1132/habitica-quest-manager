@@ -2,16 +2,21 @@ import { habitica_getParty } from '../../../backend/services/habitica/habiticaGr
 import { habitica_getUser } from '../../../backend/services/habitica/habiticaUserService';
 import { habitica_getWebhooks } from '../../../backend/services/habitica/habiticaWebhookService';
 import { HabiticaWebhookType } from '../../../backend/services/habitica/types/webhooks/commons';
-import { HabiticaWebhook } from '../../../backend/services/habitica/types/webhooks/habiticaWebhook';
 import { props_getConstantData } from '../../../backend/services/properties/propsGlobalDataService';
+import {
+  props_getQuestQueue,
+  PropsQuestQueueQuest,
+} from '../../../backend/services/properties/propsQuestQueueService';
+import { translateQuestByKey } from '../../quests/questService';
+import { TranslatedQuest } from '../../quests/types';
+
+interface PageQuestQueueQuest extends PropsQuestQueueQuest, TranslatedQuest {}
 
 interface PageQuestQueueData {
   questQueueActive: boolean;
   isPartyLeader: boolean;
   data?: {
-    mainSection: {
-      webhooks: HabiticaWebhook[];
-    };
+    quests: PageQuestQueueQuest[];
   };
 }
 
@@ -36,11 +41,22 @@ export const page_getQuestQueueData = (): PageQuestQueueData => {
     return { questQueueActive: false, isPartyLeader };
   }
 
+  // Get the quests
+  const quests = props_getQuestQueue();
+  const assembledQuests: PageQuestQueueQuest[] = quests.map((quest) => {
+    const translatedQuest = translateQuestByKey(quest.questKey);
+
+    return {
+      ...quest,
+      ...translatedQuest,
+    };
+  });
+
   return {
     questQueueActive: true,
     isPartyLeader,
     data: {
-      mainSection: { webhooks },
+      quests: assembledQuests,
     },
   };
 };

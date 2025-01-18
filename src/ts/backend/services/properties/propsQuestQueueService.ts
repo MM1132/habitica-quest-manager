@@ -20,3 +20,15 @@ export const props_setQuestQueue = (data: PropsQuestQueueQuest[]) => {
     questQueueStringData
   );
 };
+
+export const props_addQuestToQueue = (data: PropsQuestQueueQuest) => {
+  const questQueue = props_getQuestQueue();
+
+  questQueue.push(data);
+
+  props_setQuestQueue(questQueue);
+};
+
+export const props_deleteQuestQueue = () => {
+  PropertiesService.getScriptProperties().deleteProperty('questQueue');
+};

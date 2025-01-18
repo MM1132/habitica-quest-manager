@@ -93,7 +93,8 @@ const createStartLink = (
 });
 
 export const assembleMembersPageQuestSection = (
-  aqmUsers: AQM_User[]
+  aqmUsers: AQM_User[],
+  ableToAddToQueue: boolean
 ): MembersPageQuestsSection => {
   const questsNoDuplicates: Record<string, MembersPageQuest> = {};
 
@@ -147,7 +148,10 @@ export const assembleMembersPageQuestSection = (
       // The only two cases when we cannot add the quest to the queue are:
       // 1. The quest is already in the queue
       // 2. Or the quest is already in progress, then adding it to the queue makes no sense
-      if (questsNoDuplicates[aqmQuest.key].status === null) {
+      if (
+        ableToAddToQueue &&
+        questsNoDuplicates[aqmQuest.key].status === null
+      ) {
         // Now get all the same quests that are already in the queue for that user
         const questsCount = questQueue.filter(
           (quest) =>
@@ -160,7 +164,7 @@ export const assembleMembersPageQuestSection = (
             action: QuestActionType.queue,
             buttonId: `queue-${aqmQuest.key}-${aqmUser.habiticaUser.id}`,
             data: aqmUser.habiticaUser.id,
-            text: 'Add to queue',
+            text: `Queue as ${aqmUser.habiticaUser.profile.name}`,
           });
         }
       }

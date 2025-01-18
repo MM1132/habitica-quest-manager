@@ -22,7 +22,7 @@
           <li><button class="button" onclick="navigate('main')">Main</button></li>
           <li><button class="button" onclick="navigate('settings')">Settings</button></li>
           <li><button class="button" onclick="navigate('members')">Members</button></li>
-          <li><button class="button" onclick="navigate('questQueue')">Quest Queue</button></li>
+          <li><button class="button" onclick="navigate('questQueue')">Queue</button></li>
         </ul>
       </nav>
     </div>
@@ -110,8 +110,19 @@
       }
 
       window.addToQuestQueue = (userId, questKey, buttonId) => {
-        console.log("Adding quest to the queue...");
-        console.log(userId, questKey, buttonId);
+        const addToQueueButton = document.getElementById(buttonId);
+        const initialTextContent = addToQueueButton.textContent;
+
+        addToQueueButton.style.pointerEvents = 'none';
+        addToQueueButton.textContent = "Adding... Wait!";
+
+        google.script.run.withSuccessHandler(reloadPage)
+          .withFailureHandler((error) => {
+            addToQueueButton.style.pointerEvents = 'auto';
+            addToQueueButton.textContent = initialTextContent;
+            alert('Adding the quest to the queue failed. Please contact the developer (Kanguste) about this <3');
+          })
+          .page_addToQuestQueue({ userId, questKey });
       }
 
       /* ####### */

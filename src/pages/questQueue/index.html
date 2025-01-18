@@ -14,7 +14,7 @@
         mainElement.innerHTML = await asyncInclude('pages/questQueue/setup', data);
       } else {
         const mainSection = await asyncInclude(
-          "pages/questQueue/mainSection", data.data.mainSection
+          "pages/questQueue/mainSection", data.data
         );
 
         mainElement.innerHTML = `
