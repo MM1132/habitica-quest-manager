@@ -19,10 +19,10 @@
       </div>
       <nav>
         <ul class="navigation-buttons">
-          <li><button class="button" onclick="navigate('main')">Main</button></li>
-          <li><button class="button" onclick="navigate('settings')">Settings</button></li>
-          <li><button class="button" onclick="navigate('members')">Members</button></li>
-          <li><button class="button" onclick="navigate('questQueue')">Queue</button></li>
+          <li><button class="button" id="main-tab-button" onclick="navigate('main')">Main</button></li>
+          <li><button class="button" id="settings-tab-button" onclick="navigate('settings')">Settings</button></li>
+          <li><button class="button" id="members-tab-button" onclick="navigate('members')">Members</button></li>
+          <li><button class="button" id="questQueue-tab-button" onclick="navigate('questQueue')">Queue</button></li>
         </ul>
       </nav>
     </div>
@@ -137,6 +137,11 @@
       };
 
       const navigate = (page) => {
+        const oldTabButton = document.getElementById(`${currentPage}-tab-button`);
+        const newTabButton = document.getElementById(`${page}-tab-button`);
+        oldTabButton.classList.remove("selected-tab");
+        newTabButton.classList.add("selected-tab");
+
         const content = document.getElementById('content');
         content.innerHTML = `<?= include('pages/components/loading') ?>`;
 
