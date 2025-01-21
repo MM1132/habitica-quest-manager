@@ -4,6 +4,7 @@ import {
   apiInviteMembersToQuest,
 } from './backend/router/routes/apiEndpointHandlers';
 import { apiServeUserData } from './backend/router/routes/apiUserEndpoint/apiServeUserData';
+import { apiHandleWebhooks } from './backend/router/routes/apiWebhookEndpoints/apiWebhookEndpoints';
 import { layoutPageHandler } from './backend/router/routes/endpointHandlers';
 
 export enum AQM_ENDPOINTS {
@@ -21,6 +22,7 @@ router.get('', layoutPageHandler);
 router.post(AQM_ENDPOINTS.user, apiServeUserData);
 router.post(AQM_ENDPOINTS.start, apiForceStartQuest);
 router.post(AQM_ENDPOINTS.invite, apiInviteMembersToQuest);
+router.post('', apiHandleWebhooks);
 
 export const doGet = (e: GoogleAppsScript.Events.DoGet) => router.handleGet(e);
 
