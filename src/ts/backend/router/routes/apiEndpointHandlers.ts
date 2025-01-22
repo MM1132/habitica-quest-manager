@@ -21,6 +21,7 @@ export const apiInviteMembersToQuest = (e: GoogleAppsScript.Events.DoPost) => {
 
   const user = habitica_getUser();
 
+  // Fun fact: We don't actually know what Habitica replies
   const response = habitica_invite(user.party._id, questKey);
 
   return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(

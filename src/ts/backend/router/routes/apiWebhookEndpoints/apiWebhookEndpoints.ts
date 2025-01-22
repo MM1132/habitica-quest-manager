@@ -2,6 +2,7 @@ import { isQuestFinishedWebhookTurnedOn } from '../../../../frontend/pages/quest
 import { habiticaAcceptQuest } from '../../../services/habitica/habiticaAcceptQuestService';
 import { habitica_getWebhooks } from '../../../services/habitica/habiticaWebhookService';
 import { props_getConstantData } from '../../../services/properties/propsGlobalDataService';
+import { props_inviteFirstQuestFromQueue } from '../../../services/properties/propsQuestQueueService';
 
 export const apiHandleWebhooks = (e: GoogleAppsScript.Events.DoPost) => {
   const dataContents = JSON.parse(e.postData.contents);
@@ -15,10 +16,9 @@ export const apiHandleWebhooks = (e: GoogleAppsScript.Events.DoPost) => {
       habiticaAcceptQuest();
       break;
     case 'questFinished':
-      // Here we want ot make sure that our quest queue is turned on, otherwise do nothing
-      if (isQuestFinishedWebhookTurnedOn(webhooks, baseUrl))
-        habiticaAcceptQuest();
-      break;
+      if (isQuestFinishedWebhookTurnedOn(webhooks, baseUrl)) {
+        props_inviteFirstQuestFromQueue();
+      }
   }
 
   return HtmlService.createHtmlOutput();

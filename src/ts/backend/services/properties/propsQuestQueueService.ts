@@ -1,3 +1,6 @@
+import { aqm_inviteMembersToQuestByLink } from '../aqm/aqmQuestService';
+import { props_getAllMembers } from './propsMemberService';
+
 export interface PropsQuestQueueQuest {
   questKey: string;
   userId: string;
@@ -31,4 +34,23 @@ export const props_addQuestToQueue = (data: PropsQuestQueueQuest) => {
 
 export const props_deleteQuestQueue = () => {
   PropertiesService.getScriptProperties().deleteProperty('questQueue');
+};
+
+export const props_inviteFirstQuestFromQueue = () => {
+  const questQueue = props_getQuestQueue();
+  const firstQuest = questQueue.shift();
+  if (!firstQuest) return;
+
+  const questOwnerMember = props_getAllMembers().find(
+    (member) => member.id === firstQuest.userId
+  );
+
+  // In case we did not find the member
+  if (!questOwnerMember) return;
+
+  // Now we must send out the invitations for the quest
+  aqm_inviteMembersToQuestByLink(questOwnerMember.link, firstQuest.questKey);
+
+  // And then set the quest queue once again
+  props_setQuestQueue(questQueue);
 };
