@@ -9,6 +9,7 @@ import { habitica_getWebhooks } from '../../../backend/services/habitica/habitic
 import { HabiticaWebhookType } from '../../../backend/services/habitica/types/webhooks/commons';
 import { props_getConstantData } from '../../../backend/services/properties/propsGlobalDataService';
 import { props_getAllMembers } from '../../../backend/services/properties/propsMemberService';
+import { props_getQuestQueue } from '../../../backend/services/properties/propsQuestQueueService';
 import {
   MembersPageMembersSection,
   assembleMembersPageMembersSection,
@@ -28,6 +29,7 @@ export const page_getMembersData = (): MembersPageData => {
   const { baseUrl } = props_getConstantData();
   const user = habitica_getUser();
   const party = habitica_getParty(user.party._id);
+  const questQueue = props_getQuestQueue();
 
   // Get all users we have links for
   const users = props_getAllMembers().map((memberProperty) => {
@@ -61,6 +63,7 @@ export const page_getMembersData = (): MembersPageData => {
   // Get the quests section only with the users whom request was actually successful
   const questsSection = assembleMembersPageQuestSection(
     users.filter((user) => !('success' in user)) as AQM_User[],
+    questQueue,
     ableToAddToQueue
   );
 

@@ -84,7 +84,7 @@ export const props_removeMember = (password: string, memberId: string) => {
   );
 };
 
-export const props_getAllMembers = () => {
+export const props_getAllMembers = (): PropertyMember[] => {
   const membersProperty =
     PropertiesService.getScriptProperties().getProperty('members');
 

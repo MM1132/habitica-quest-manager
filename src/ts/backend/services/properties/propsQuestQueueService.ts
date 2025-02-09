@@ -1,4 +1,6 @@
 import { aqm_inviteMembersToQuestByLink } from '../aqm/aqmQuestService';
+import { habitica_invite } from '../habitica/habiticaGroupService';
+import { habitica_getUser } from '../habitica/habiticaUserService';
 import { props_getAllMembers } from './propsMemberService';
 
 export interface PropsQuestQueueQuest {
@@ -38,18 +40,26 @@ export const props_deleteQuestQueue = () => {
 
 export const props_inviteFirstQuestFromQueue = () => {
   const questQueue = props_getQuestQueue();
+  const user = habitica_getUser();
+
   const firstQuest = questQueue.shift();
   if (!firstQuest) return;
 
-  const questOwnerMember = props_getAllMembers().find(
-    (member) => member.id === firstQuest.userId
-  );
+  // Check if the quest owner is us by any chance
+  if (firstQuest.userId === user.id) {
+    habitica_invite(user.party._id, firstQuest.questKey);
+  } else {
+    // If it wasn't us, it must be one of the members
+    const questOwnerMember = props_getAllMembers().find(
+      (member) => member.id === firstQuest.userId
+    );
 
-  // In case we did not find the member
-  if (!questOwnerMember) return;
+    // In case we did not find the member
+    if (!questOwnerMember) return;
 
-  // Now we must send out the invitations for the quest
-  aqm_inviteMembersToQuestByLink(questOwnerMember.link, firstQuest.questKey);
+    // Now we must send out the invitations for the quest
+    aqm_inviteMembersToQuestByLink(questOwnerMember.link, firstQuest.questKey);
+  }
 
   // And then set the quest queue once again
   props_setQuestQueue(questQueue);

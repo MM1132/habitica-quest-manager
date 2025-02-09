@@ -27,6 +27,10 @@ export const doRequest = <RETURN_TYPE>(
   url: string,
   options: ApiRequestOptions
 ): RETURN_TYPE => {
+  if (options.payload) {
+    options.payload = JSON.stringify(options.payload);
+  }
+
   const response = UrlFetchApp.fetch(url, options);
   const parsedJson = JSON.parse(response.getContentText());
 
@@ -52,9 +56,10 @@ export const doHabiticaApiRequest = <RETURN_TYPE>(
   };
 
   const options = {
-    method: params.method,
-    payload: params.payload,
     headers: HEADERS,
+    method: params.method,
+    contentType: 'application/json',
+    payload: params.payload,
     muteHttpExceptions: true,
   };
 

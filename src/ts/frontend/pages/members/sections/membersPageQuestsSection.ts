@@ -1,7 +1,7 @@
 import { AQM_QuestStatus } from '../../../../backend/router/routes/apiUserEndpoint/apiAssembleCurrentQuest';
 import { AQM_Quest } from '../../../../backend/router/routes/apiUserEndpoint/apiAssembleUserQuests';
 import { AQM_User } from '../../../../backend/router/routes/apiUserEndpoint/apiServeUserData';
-import { props_getQuestQueue } from '../../../../backend/services/properties/propsQuestQueueService';
+import { PropsQuestQueueQuest } from '../../../../backend/services/properties/propsQuestQueueService';
 import { AQM_ENDPOINTS } from '../../../../index';
 import { translateQuestByKey } from '../../../quests/questService';
 import { TranslatedQuest } from '../../../quests/types';
@@ -94,11 +94,10 @@ const createStartLink = (
 
 export const assembleMembersPageQuestSection = (
   aqmUsers: AQM_User[],
+  questQueue: PropsQuestQueueQuest[],
   ableToAddToQueue: boolean
 ): MembersPageQuestsSection => {
   const questsNoDuplicates: Record<string, MembersPageQuest> = {};
-
-  const questQueue = props_getQuestQueue();
 
   // You loop through all the users
   aqmUsers.forEach((aqmUser) => {
@@ -142,34 +141,44 @@ export const assembleMembersPageQuestSection = (
           ...translatedQuest,
         };
       }
+    });
+  });
 
-      // In which case do we want the "add to queue" button to be visible?
-      // If another quest is in progress, we can add this one to the queue
-      // The only two cases when we cannot add the quest to the queue are:
-      // 1. The quest is already in the queue
-      // 2. Or the quest is already in progress, then adding it to the queue makes no sense
-      if (
-        ableToAddToQueue &&
-        questsNoDuplicates[aqmQuest.key].status === null
-      ) {
-        // Now get all the same quests that are already in the queue for that user
-        const questsCount = questQueue.filter(
+  // Add the Queue links
+  if (ableToAddToQueue) {
+    // Looping through all the quests to determine which quests need the queue links
+    Object.keys(questsNoDuplicates).forEach((questKey) => {
+      // Loop through all the users to give each user a chance to have their button there
+      aqmUsers.forEach((aqmUser) => {
+        // 1. How many quests of this `questKey` does the user already have in the queue
+        const questCountInQueue = questQueue.filter(
           (quest) =>
-            quest.questKey === aqmQuest.key &&
+            quest.questKey === questKey &&
             quest.userId === aqmUser.habiticaUser.id
         ).length;
 
-        if (questsNoDuplicates[aqmQuest.key].count > questsCount) {
-          questsNoDuplicates[aqmQuest.key]._actions.push({
+        // 2. How many quests with the same `questKey` does the user have in their inventory
+        const questInInventory = aqmUser.aqmQuests.find(
+          (quest) => quest.key === questKey
+        );
+        if (!questInInventory) return;
+        let questCountInInventory = questInInventory.count;
+        if (questInInventory.status) {
+          questCountInInventory--;
+        }
+
+        // 3. And if they have more quests in their inventory than in the queue, display the button
+        if (questCountInInventory > questCountInQueue) {
+          questsNoDuplicates[questKey]._actions.push({
             action: QuestActionType.queue,
-            buttonId: `queue-${aqmQuest.key}-${aqmUser.habiticaUser.id}`,
+            buttonId: `queue-${questKey}-${aqmUser.habiticaUser.id}`,
             data: aqmUser.habiticaUser.id,
             text: `Queue as ${aqmUser.habiticaUser.profile.name}`,
           });
         }
-      }
+      });
     });
-  });
+  }
 
   const sortedQuests = Object.values(questsNoDuplicates)
     .map((quest) => quest)

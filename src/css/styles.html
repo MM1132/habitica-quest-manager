@@ -380,4 +380,32 @@
     color: red;
     vertical-align: middle;
   }
+
+  .quest-queue-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .quest-queue-list-item {
+    cursor: pointer;
+    background-color: var(--color-light);
+    box-shadow: 0 1px 3px 0 var(--color-dark-3), 0 1px 2px 0 var(--color-dark-3);
+    padding: 10px;
+    border-radius: 5px;
+    
+    /* flex-grow: 1;
+    flex-basis: fit-content;
+    gap: 5px; */
+  }
+
+  /* .quest-queue-list-item {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px 0 var(--color-dark-3), 0 1px 2px 0 var(--color-dark-3);
+    padding: 5px;
+  } */
 </style>
